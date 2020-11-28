@@ -6,68 +6,105 @@ import util
 
 
 class Joueur:
-    def __init__(self, nom, prenom, date_de_naissance, sexe, classement):
-        if isinstance(nom, str):
-            self.__nom = nom
-        else:
-            raise exception.JoueurException(f"nom du joueur invalide : {nom}")
-        if isinstance(prenom, str):
-            self.__prenom = prenom
-        else:
-            raise exception.JoueurException(f"prenom du joueur invalide : {prenom}")
-        if isinstance(sexe, str) and sexe.strip().upper() in ['F', 'M']:
-            self.__sexe = sexe
-        else:
-            raise exception.JoueurException(f"sexe du joueur invalide : {sexe}")
-        self.__set_date_de_naissance(date_de_naissance)
-        self.__set_classement(classement)
+
+    __id = 0
+    __list_attrs = ['_nom', '_prenom', '_date_de_naissance', '_sexe', '_classement']
+
+    def __init__(self, **joueur_properties):
+        for (attr_name, attr_value) in joueur_properties.items():
+            setattr(self, attr_name, attr_value)
+        self.check_attrs()
+        Joueur.__id += 1
+        if not hasattr(self, '_id'):
+            self._id = Joueur.__id
 
     def __str__(self):
-        return f"Joueur : {self.__nom} {self.__prenom} {self.__date_de_naissance} {self.__sexe} {self.__classement}"
+        return f"Joueur : {self._id } {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}"
+
+    def check_attrs(self):
+        for attr in Joueur.__list_attrs:
+            if not hasattr(self, attr):
+                raise exception.JoueurException(f"objet de type Joueur sans propriété : {attr[1:]}")
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        if isinstance(value, int) and value > 0:
+            self._id = value
+        else:
+            raise exception.JoueurException(f"id du joueur invalide : {value}")
 
     @property
     def nom(self):
-        return self.__nom
+        return self._nom
+
+    @nom.setter
+    def nom(self, value):
+        if isinstance(value, str):
+            self._nom = value
+        else:
+            raise exception.JoueurException(f"nom du joueur invalide : {value}")
 
     @property
     def prenom(self):
-        return self.__prenom
+        return self._prenom
+
+    @prenom.setter
+    def prenom(self, value):
+        if isinstance(value, str):
+            self._prenom = value
+        else:
+            raise exception.JoueurException(f"prenom du joueur invalide : {value}")
 
     @property
     def sexe(self):
-        return self.__sexe
+        return self._sexe
 
-    def __get_date_de_naissance(self):
-        return self.__date_de_naissance
+    @sexe.setter
+    def sexe(self, value):
+        if isinstance(value, str) and value.strip().upper() in ['F', 'M']:
+            self._sexe = value
+        else:
+            raise exception.JoueurException(f"sexe du joueur invalide : {value}")
 
-    def __set_date_de_naissance(self, date_de_naissance):
-        if isinstance(date_de_naissance, str) and util.is_date_valid(date_de_naissance):
+    @property
+    def date_de_naissance(self):
+        return self._date_de_naissance
+
+    @date_de_naissance.setter
+    def date_de_naissance(self, value):
+        if isinstance(value, str) and util.is_date_valid(value):
             date_moins_6_ans = datetime.now() - timedelta(days=2191, hours=12)
-            print(date_moins_6_ans)
-            if util.decode_date(date_de_naissance) < date_moins_6_ans:
-                self.__date_de_naissance = date_de_naissance
+            if util.decode_date(value) < date_moins_6_ans:
+                self._date_de_naissance = value
             else:
-                raise exception.JoueurException(f"le joueur a moins de 6 ans : {date_de_naissance}")
+                raise exception.JoueurException(f"le joueur a moins de 6 ans : {value}")
         else:
-            raise exception.JoueurException(f"date de naissance invalide : {date_de_naissance}")
+            raise exception.JoueurException(f"date de naissance invalide : {value}")
 
-    date_de_naissance = property(__get_date_de_naissance)
+    @property
+    def classement(self):
+        return self._classement
 
-    def __get_classement(self):
-        return self.__classement
-
-    def __set_classement(self, classement):
-        if isinstance(classement, int) and classement > 0:
-            self.__classement = classement
+    @classement.setter
+    def classement(self, value):
+        if isinstance(value, int) and value > 0:
+            self._classement = value
         else:
-            raise exception.JoueurException(f"classement du joueur invalide : {classement}")
-
-    classement = property(__get_classement, __set_classement)
-
+            raise exception.JoueurException(f"classement du joueur invalide : {value}")
 
 if __name__ == "__main__":
     #running controller function
-    a = Joueur("saliniere", "yannis", "1977-05-03", "M", 1)
+    dico = dict()
+    dico['nom'] = "saliniere"
+    dico['prenom'] = "yannis"
+    dico['date_de_naissance'] = "1977-05-03"
+    dico['sexe'] = "M"
+    dico['classement'] = 1
+    a = Joueur(**dico)
     print(a)
     print(a.nom)
     print(a.date_de_naissance)
@@ -79,4 +116,9 @@ if __name__ == "__main__":
     dico = {'classement': 4, 'prenom': "jean", 'nom': "dico", 'date_de_naissance': "1977-05-03", 'sexe': "M"}
     c = Joueur(**dico)
     print(c)
-    c.date_de_naissance = "1977-05-03"
+    c.date_de_naissance = "1977-05-31"
+    c.id = 5
+    print(c)
+
+    d = Joueur(id=12, classement=3, prenom="jason", nom="statham", date_de_naissance="1977-05-03", sexe="M")
+    print(d)
