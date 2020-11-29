@@ -1,14 +1,18 @@
 # -*-coding:utf-8 -*
-import view
-import model
-import exception
-choix = view.afficher_menu()
+from app.views.menu import Menu
+from app.views.formulaire import JoueurForm
+from app.models.joueur import Joueur
+from app.models import exception
 
-if choix == "0":
+menu = Menu()
+choix = menu.get_choix()
+
+print("choix", choix)
+if choix == 0:
     while True:
-        dico = view.creer_joueur()
+        dico = JoueurForm().creer_joueur()
         try:
-            joueur = model.Joueur(**dico)
+            joueur = Joueur(**dico)
             print(joueur)
             break
         except exception.JoueurException as ex:
