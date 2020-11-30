@@ -1,5 +1,7 @@
 # -*-coding:utf-8 -*
 from app.utils import util
+from app.models.joueur import Joueur
+from app.models.exception import JoueurException
 
 class JoueurForm:
 
@@ -13,8 +15,13 @@ class JoueurForm:
         dico['sexe'] = self.get_sexe()
         dico['date_de_naissance'] = self.get_date_de_naissance()
         dico['classement'] = self.get_classement()
-        print("dico", dico)
-        return dico
+        try:
+            joueur = Joueur(**dico)
+        except JoueurException as ex:
+            print(ex.message)
+            return self.creer_joueur()
+        else:
+            return joueur
 
     def get_chaine_alpha(self, libelle):
         chaine = input(f"{libelle} : ").strip().capitalize()

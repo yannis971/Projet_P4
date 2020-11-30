@@ -2,7 +2,9 @@
 
 class Menu:
 
-    __liste_de_choix = ('Créer un joueur', 'Créer un tournoi', 'Ajouter 8 joueurs', 'Quitter')
+    __liste_de_choix = ('Créer un joueur', 'Créer un tournoi', 'Ajouter 8 joueurs',
+                        'Générer des paires de joueurs', 'Entrer les résultats',
+                        'Afficher les rapports', 'Enregistrer', 'Quitter')
 
     def __init__(self):
         self._choix = -1

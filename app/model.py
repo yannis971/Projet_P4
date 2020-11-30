@@ -96,6 +96,10 @@ class Joueur:
         else:
             raise exception.JoueurException(f"classement du joueur invalide : {value}")
 
+class Tour:
+
+class Tournoi:
+
 if __name__ == "__main__":
     #running controller function
     dico = dict()
