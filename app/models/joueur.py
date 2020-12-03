@@ -1,8 +1,8 @@
 # -*-coding:utf-8 -*
 
 from datetime import datetime, timedelta
-import exception
-import util
+from app.models import exception
+from app.utils import util
 
 
 class Joueur:
@@ -95,10 +95,6 @@ class Joueur:
             self._classement = value
         else:
             raise exception.JoueurException(f"classement du joueur invalide : {value}")
-
-class Tour:
-
-class Tournoi:
 
 if __name__ == "__main__":
     #running controller function

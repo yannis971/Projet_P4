@@ -5,6 +5,11 @@ def afficher_menu():
     print("0 - Créer un joueur")
     print("1 - Créer un tournoi")
     print("2 - Ajouter 8 joueurs")
+    print("3 - Générer des paires de joueurs pour le prochain tour")
+    print("4 - Saisir les résultats")
+    print("5 - Afficher les rapports")
+    print("6 - Sauvegarder les données")
+    print("Q - Quitter l'application")
     choix = input("entrer votre choix : ")
     return choix
 
