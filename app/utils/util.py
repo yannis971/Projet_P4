@@ -20,6 +20,9 @@ def decode_date(chaine):
     if is_date_valid(chaine):
         return datetime.strptime(chaine, '%Y-%m-%d')
 
+def encode(date_time):
+    return date_time.strftime('%Y-%m-%dT%H:%M:%S')
+
 def is_chaine_alpha_valide(chaine):
     pattern_nom_prenom = "^[A-Z][A-Za-z\é\è\ê\ë\ç\ï\ô\-]+$"
     return (isinstance(chaine, str) and len(chaine) > 1 and re.match(pattern_nom_prenom, chaine))
