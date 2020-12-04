@@ -53,16 +53,16 @@ class JoueurForm:
 
 class TournoiForm:
 
-    def __init__():
+    def __init__(self):
         self._dico = dict()
 
     def creer_tournoi(self):
         self._dico['nom'] = self.get_chaine("nom") 
         self._dico['lieu'] = self.get_chaine("lieu")
-        self._dico['date_de_debut'] = self.get_date_debut(self)
-        self._dico['date_de_fin'] = self.get_date_de_fin(self)
-        self._dico['nombre_de_tours'] = self.get_nombre_de_tours(self)
-        self._dico['controle_du_temps'] = self.get_controle_du_temps(self)
+        self._dico['date_de_debut'] = self.get_date_de_debut()
+        self._dico['date_de_fin'] = self.get_date_de_fin()
+        self._dico['nombre_de_tours'] = self.get_nombre_de_tours()
+        self._dico['controle_du_temps'] = self.get_controle_du_temps()
         self._dico['description'] = self.get_chaine("description")
         return self._dico
 
@@ -77,9 +77,9 @@ class TournoiForm:
 
     def get_date_de_debut(self):
         date_du_jour = datetime.now()
-        date_de_debut = input(f"date de début au format SIAA-MM-JJ ex {util.encode(date_du_jour)[:11]}: ").strip()
+        date_de_debut = input(f"date de début au format SIAA-MM-JJ ex {util.encode(date_du_jour)[:10]}: ").strip()
         try:
-            assert util.is_date_valid(date_de_debut) and utils.decode(date_de_debut) >= date_du_jour
+            assert util.is_date_valid(date_de_debut) and util.decode_date(date_de_debut) >= date_du_jour
         except AssertionError:
             print(f"la date de debut {date_de_debut} est invalide ou < la date du jour {date_du_jour}")
             self.get_date_de_debut()
@@ -87,10 +87,10 @@ class TournoiForm:
             return date_de_debut
 
     def get_date_de_fin(self):
-        date_de_debut = util.decode(self._dico['date_de_debut']) 
-        date_de_fin = input(f"date de fin au format SIAA-MM-JJ ex {util.encode(date_de_debut)[:11]}: ").strip()
+        date_de_debut = util.decode_date(self._dico['date_de_debut']) 
+        date_de_fin = input(f"date de fin au format SIAA-MM-JJ ex {util.encode(date_de_debut)[:10]}: ").strip()
         try:
-            assert util.is_date_valid(date_de_fin) and utils.decode(date_de_fin) >= date_de_debut
+            assert util.is_date_valid(date_de_fin) and util.decode_date(date_de_fin) >= date_de_debut
         except AssertionError:
             print(f"la date de fin {date_de_fin} est invalide ou < la date de debut {date_de_debut}")
             self.get_date_de_fin()
