@@ -11,17 +11,21 @@ def is_date_valid(chaine):
             del(date)
             result = True
         except ValueError as ex:
+            print(f"la chaine de caractères {chaine} n'est pas au format date '%Y-%m-%d'")
             result = False
     else:
+        print(f"la chaine de caractères {chaine} ne correspond pas au pattern {pattern_date}")
         result = False
     return result
 
 def decode_date(chaine):
     if is_date_valid(chaine):
         return datetime.strptime(chaine, '%Y-%m-%d')
+    else:
+        print("abend dans decode_date, chaine :", chaine)
 
-def encode(date_time):
-    return date_time.strftime('%Y-%m-%dT%H:%M:%S')
+def encode_date(date_time):
+    return date_time.strftime('%Y-%m-%d')
 
 def is_chaine_alpha_valide(chaine):
     pattern_nom_prenom = "^[A-Z][A-Za-z\é\è\ê\ë\ç\ï\ô\-]+$"

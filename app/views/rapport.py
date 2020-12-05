@@ -5,6 +5,6 @@ class ListView:
 		self._title = title
 		self._liste_items = liste_items
 	def display(self):
-		
-		for item in self._liste_items:
-			print(item)
+		print(self._title)
+		for i, item in enumerate(self._liste_items):
+			print(f"indice : {i} - item : {item}")

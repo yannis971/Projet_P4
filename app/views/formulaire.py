@@ -50,6 +50,21 @@ class JoueurForm:
         else:
             return classement
 
+    def ajouter_n_joueurs(self, number=8):
+        try:
+            liste_saisie = input(f"saisir {number} indices de joueurs disctincts en les séparant d'un espace : ").strip()
+            liste_saisie = set(liste_saisie.split())
+            assert len(liste_saisie) == number
+            liste_indices = [int(indice) for indice in liste_saisie if int(indice) >= 0]   
+            assert len(liste_indices) == number         
+        except AssertionError:
+            print(f"il faut saisir {number} indices disctincts parmi les indices proposés")
+            return self.ajouter_n_joueurs(number)
+        except ValueError:
+            print("au moins une valeur non numérique saisie")
+            return self.ajouter_n_joueurs(number)
+        else:
+            return liste_indices
 
 class TournoiForm:
 
@@ -57,11 +72,12 @@ class TournoiForm:
         self._dico = dict()
 
     def creer_tournoi(self):
+        print("Formulaire de création de tournoi")
         self._dico['nom'] = self.get_chaine("nom") 
         self._dico['lieu'] = self.get_chaine("lieu")
-        self._dico['date_de_debut'] = self.get_date_de_debut()
-        self._dico['date_de_fin'] = self.get_date_de_fin()
-        self._dico['nombre_de_tours'] = self.get_nombre_de_tours()
+        self._dico['date_de_debut'] = self.get_date("date de début", datetime.now())        
+        self._dico['date_de_fin'] = self.get_date("date de fin", util.decode_date(self._dico['date_de_debut']))
+        self._dico['nombre_de_tours'] = self.get_nombre_de_tours(valeur_par_defaut=4)
         self._dico['controle_du_temps'] = self.get_controle_du_temps()
         self._dico['description'] = self.get_chaine("description")
         return self._dico
@@ -75,30 +91,30 @@ class TournoiForm:
             print(f"{libelle} du tournoi invalide : {chaine}")
             return self.get_chaine(libelle)
 
-    def get_date_de_debut(self):
-        date_du_jour = datetime.now()
-        date_de_debut = input(f"date de début au format SIAA-MM-JJ ex {util.encode(date_du_jour)[:10]}: ").strip()
+    def get_date(self, libelle, date_min):        
+        date_input = input(f"{libelle} au format SIAA-MM-JJ ex {util.encode_date(date_min)}: ").strip()
         try:
-            assert util.is_date_valid(date_de_debut) and util.decode_date(date_de_debut) >= date_du_jour
+            assert util.is_date_valid(date_input) and date_input >= util.encode_date(date_min)
         except AssertionError:
-            print(f"la date de debut {date_de_debut} est invalide ou < la date du jour {date_du_jour}")
-            self.get_date_de_debut()
-        else:
-            return date_de_debut
+            print(f"la {libelle} : {date_input} est invalide ou strictement inférieure à {date_min}")
+            return self.get_date(libelle, date_min)
+        else:           
+            return date_input
 
-    def get_date_de_fin(self):
-        date_de_debut = util.decode_date(self._dico['date_de_debut']) 
-        date_de_fin = input(f"date de fin au format SIAA-MM-JJ ex {util.encode(date_de_debut)[:10]}: ").strip()
+    def get_nombre_de_tours(self, valeur_par_defaut):
+        nombre_de_tours = input(f"nombre de tours (par défaut {valeur_par_defaut} si aucune valeur saisie) :")
+        nombre_de_tours = nombre_de_tours.strip()
+        if nombre_de_tours == "":
+            nombre_de_tours = valeur_par_defaut
+            print(f"le nombre de tours est égal à {nombre_de_tours}.")
         try:
-            assert util.is_date_valid(date_de_fin) and util.decode_date(date_de_fin) >= date_de_debut
-        except AssertionError:
-            print(f"la date de fin {date_de_fin} est invalide ou < la date de debut {date_de_debut}")
-            self.get_date_de_fin()
+            nombre_de_tours = int(nombre_de_tours)
+        except ValueError as ex:
+            print(ex)
+            return self.get_nombre_de_tours(valeur_par_defaut)
         else:
-            return date_de_fin
+            return nombre_de_tours
 
-    def controle_du_temps(self):
+    def get_controle_du_temps(self):
         return "bullet"
-
-
         

@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*
 
 from datetime import datetime, timedelta
-from app.models import exception
+from app.models.exception import JoueurException
 from app.utils import util
 
 
@@ -24,7 +24,7 @@ class Joueur:
     def check_attrs(self):
         for attr in Joueur.__list_attrs:
             if not hasattr(self, attr):
-                raise exception.JoueurException(f"objet de type Joueur sans propriété : {attr[1:]}")
+                raise JoueurException(f"objet de type Joueur sans propriété : {attr[1:]}")
 
     @property
     def id(self):
@@ -35,7 +35,7 @@ class Joueur:
         if isinstance(value, int) and value > 0:
             self._id = value
         else:
-            raise exception.JoueurException(f"id du joueur invalide : {value}")
+            raise JoueurException(f"id du joueur invalide : {value}")
 
     @property
     def nom(self):
@@ -46,7 +46,7 @@ class Joueur:
         if isinstance(value, str):
             self._nom = value
         else:
-            raise exception.JoueurException(f"nom du joueur invalide : {value}")
+            raise JoueurException(f"nom du joueur invalide : {value}")
 
     @property
     def prenom(self):
@@ -57,7 +57,7 @@ class Joueur:
         if isinstance(value, str):
             self._prenom = value
         else:
-            raise exception.JoueurException(f"prenom du joueur invalide : {value}")
+            raise JoueurException(f"prenom du joueur invalide : {value}")
 
     @property
     def sexe(self):
@@ -68,7 +68,7 @@ class Joueur:
         if isinstance(value, str) and value.strip().upper() in ['F', 'M']:
             self._sexe = value
         else:
-            raise exception.JoueurException(f"sexe du joueur invalide : {value}")
+            raise JoueurException(f"sexe du joueur invalide : {value}")
 
     @property
     def date_de_naissance(self):
@@ -81,9 +81,9 @@ class Joueur:
             if util.decode_date(value) < date_moins_6_ans:
                 self._date_de_naissance = value
             else:
-                raise exception.JoueurException(f"le joueur a moins de 6 ans : {value}")
+                raise JoueurException(f"le joueur a moins de 6 ans : {value}")
         else:
-            raise exception.JoueurException(f"date de naissance invalide : {value}")
+            raise JoueurException(f"date de naissance invalide : {value}")
 
     @property
     def classement(self):
@@ -94,7 +94,7 @@ class Joueur:
         if isinstance(value, int) and value > 0:
             self._classement = value
         else:
-            raise exception.JoueurException(f"classement du joueur invalide : {value}")
+            raise JoueurException(f"classement du joueur invalide : {value}")
 
 if __name__ == "__main__":
     #running controller function
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     a.classement = 2
     print(a)
 
-    b = Joueur(classement=3, prenom="jason", nom="statham", date_de_naissance="1977-05-03", sexe="M")
+    b = Joueur(classemen=3, prenom="jason", nom="statham", date_de_naissance="1977-05-03", sexe="M")
     print(b)
     dico = {'classement': 4, 'prenom': "jean", 'nom': "dico", 'date_de_naissance': "1977-05-03", 'sexe': "M"}
     c = Joueur(**dico)
