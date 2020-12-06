@@ -52,7 +52,7 @@ class JoueurForm:
 
     def ajouter_n_joueurs(self, number=8):
         try:
-            liste_saisie = input(f"saisir {number} indices de joueurs disctincts en les séparant d'un espace : ").strip()
+            liste_saisie = input(f"saisir {number} indices de joueurs distincts en les séparant d'un espace : ").strip()
             liste_saisie = set(liste_saisie.split())
             assert len(liste_saisie) == number
             liste_indices = [int(indice) for indice in liste_saisie if int(indice) >= 0]   
@@ -116,5 +116,19 @@ class TournoiForm:
             return nombre_de_tours
 
     def get_controle_du_temps(self):
-        return "bullet"
-        
+        liste_controle_du_temps = ['bullet', 'blitz', 'coup rapide']
+        print("Définir le contrôle du temps")
+        for i, libelle in enumerate(liste_controle_du_temps):
+            print(f"saisir {i} pour {libelle}")
+        choix = input("votre choix : ").strip()
+        try:
+            choix = int(choix)
+            assert choix >= 0 and choix < len(liste_controle_du_temps)
+        except ValueError:
+            print(f"saisir un entier entre 0 et {len(liste_controle_du_temps)-1}")
+            return self.get_controle_du_temps()
+        except AssertionError:
+            print(f"choix non valide")
+            return self.get_controle_du_temps()
+        else:
+            return liste_controle_du_temps[choix]

@@ -31,19 +31,23 @@ class Controller:
 	def __init__(self):
 		self._menu = Menu(Controller.__liste_de_choix)
 		self._choix = self._menu.get_choix()
-		self._liste_joueurs = list()
-		self._tournoi = None
+		self._liste_joueurs = Joueur.read_all()
+		self._liste_tournois = Tournoi.read_all()
 
 
 	def creer_joueur_handler(self):
 		try:
 			joueur = Joueur(**JoueurForm().creer_joueur())
+			self._liste_joueurs.append(joueur)
+			joueur.create()
 		except exception.JoueurException as ex:
 			print(ex)
 			return self.creer_joueur_handler()
+		except exception.JoueurDAOException as ex:
+			print(ex)
+			print(f"création joueur KO - {joueur}")
 		else:
-			self._liste_joueurs.append(joueur)
-			print(f"création joueur ok - {joueur}")
+			print(f"création joueur OK - {joueur}")
 
 	def afficher_liste_joueurs_handler(self):
 		ListView("Liste de joueurs", self._liste_joueurs).display()
@@ -56,12 +60,13 @@ class Controller:
 			print(ex)
 			return self.creer_tournoi_handler()
 		else:
-			self._tournoi = tournoi
+			self._liste_tournois.append(tournoi)
 			print(f"création tournoi ok - {tournoi}")
 
 
 
 	def ajouter_n_joueurs(self):
+
 		ListView("Liste de joueurs", self._liste_joueurs).display()
 		liste_indices_joueurs_inscrits = JoueurForm().ajouter_n_joueurs(3)
 		for i in liste_indices_joueurs_inscrits:
