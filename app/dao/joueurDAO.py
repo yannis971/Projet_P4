@@ -16,8 +16,8 @@ class JoueurDAO:
         if self.joueur_exists(joueur):
             raise JoueurDAOException(f"Le joueur existe déjà dans la base de données : {joueur}")
         else:
+            joueur.id = JoueurDAO._table_joueurs._get_next_id()
             data_storage = dict((attr[1:], value) for (attr, value) in joueur.__dict__.items())
-            print(data_storage)
             JoueurDAO._table_joueurs.insert(data_storage)
 
     def read_all(self):
@@ -30,27 +30,20 @@ class JoueurDAO:
         joueur = Query()
         table = JoueurDAO._table_joueurs
         item = table.search((joueur.nom == nom) & (joueur.prenom == prenom) & (joueur.date_de_naissance == date_de_naissance))
-        print("item", item)
+        doc = item[0]
+        print("doc.doc_id :", doc.doc_id, "/ type(doc.doc_id) :", type(doc.doc_id))
         if item:
-            instance_joueur = jx.Joueur(**item[0])
-            print("joueur existe ", instance_joueur)
-            return instance_joueur
+            return jx.Joueur(**item[0])
         else:
-            return False
+            return None
+
+    def update(self, joueur):
+        pass
 
     def joueur_exists(self, joueur):
-        if self.read_by_index(joueur.nom, joueur.prenom, joueur.date_de_naissance):
-            print("__joueur_exists True")
+        instance_joueur = self.read_by_index(joueur.nom, joueur.prenom, joueur.date_de_naissance)
+        if instance_joueur:
+            joueur.id = instance_joueur.id
             return True
         else:
-            print("__joueur_exists False")
             return False
-
-    @classmethod
-    def get_max_id(cls):
-        print("get_max_id")
-        print(JoueurDAO._table_joueurs.all())
-        liste_id = [item['id'] for item in JoueurDAO._table_joueurs.all()]
-        print("liste_id", liste_id)
-        liste_id.append(0)
-        return max(liste_id)

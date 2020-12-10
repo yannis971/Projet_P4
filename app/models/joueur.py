@@ -8,20 +8,17 @@ from app.dao.joueurDAO import JoueurDAO
 
 class Joueur:
 
-    __id = JoueurDAO.get_max_id()
     __list_attrs = ['_nom', '_prenom', '_date_de_naissance', '_sexe', '_classement']
 
     def __init__(self, **joueur_properties):
         for (attr_name, attr_value) in joueur_properties.items():
             setattr(self, attr_name, attr_value)
         self.check_attrs()
-        #if not hasattr(self, '_id'):
-            #Joueur.__id += 1
-            #self.id = 0
+        if not hasattr(self, '_id'):
+            self.id = 0
 
     def __str__(self):
-        #return (f"Joueur : {self._id } {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}")
-        return (f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}")
+        return (f"Joueur : {self._id } {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}")
 
     def check_attrs(self):
         for attr in Joueur.__list_attrs:
@@ -34,7 +31,7 @@ class Joueur:
 
     @id.setter
     def id(self, value):
-        if isinstance(value, int) and value > 0:
+        if isinstance(value, int) and value >= 0:
             self._id = value
         else:
             raise JoueurException(f"id du joueur invalide : {value}")
