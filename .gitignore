@@ -4,4 +4,6 @@ app/__pycache__
 app/models/__pycache__
 app/utils/__pycache__
 app/views/__pycache__
+app/dao/__pycache__
 .idea/
+

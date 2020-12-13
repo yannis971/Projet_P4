@@ -3,23 +3,20 @@
 from datetime import datetime, timedelta
 from app.models.exception import JoueurException
 from app.utils import util
+from app.dao.joueurDAO import JoueurDAO
 
 
 class Joueur:
 
-    __id = 0
     __list_attrs = ['_nom', '_prenom', '_date_de_naissance', '_sexe', '_classement']
 
     def __init__(self, **joueur_properties):
         for (attr_name, attr_value) in joueur_properties.items():
             setattr(self, attr_name, attr_value)
         self.check_attrs()
-        Joueur.__id += 1
-        if not hasattr(self, '_id'):
-            self._id = Joueur.__id
 
     def __str__(self):
-        return f"Joueur : {self._id } {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}"
+        return (f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}")
 
     def check_attrs(self):
         for attr in Joueur.__list_attrs:
@@ -32,7 +29,7 @@ class Joueur:
 
     @id.setter
     def id(self, value):
-        if isinstance(value, int) and value > 0:
+        if isinstance(value, int) and value >= 0:
             self._id = value
         else:
             raise JoueurException(f"id du joueur invalide : {value}")
@@ -95,6 +92,28 @@ class Joueur:
             self._classement = value
         else:
             raise JoueurException(f"classement du joueur invalide : {value}")
+
+    def create(self):
+        JoueurDAO().create(self)
+
+    @classmethod
+    def read_all(cls):
+        return JoueurDAO().read_all()
+
+    @classmethod
+    def read(cls, id):
+        return JoueurDAO().read(id)
+
+    @classmethod
+    def read_by_index(cls, nom, prenom, date_de_naissance):
+        return JoueurDAO().read(nom, prenom, date_de_naissance)
+
+    def update(self):
+        JoueurDAO().update(self)
+
+    def delete(self):
+        JoueurDAO().delete(self)
+        del(self)
 
 if __name__ == "__main__":
     #running controller function

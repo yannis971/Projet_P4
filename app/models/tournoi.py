@@ -1,8 +1,13 @@
 # -*-coding:utf-8 -*
 
 from datetime import datetime
+from operator import attrgetter
 from app.models.exception import TournoiException
+from app.models.joueur import Joueur
 from app.utils import util
+
+
+
 
 class Tournoi:
 
@@ -18,8 +23,9 @@ class Tournoi:
 		self._liste_tours = list()
 		self._liste_indices_joueurs_inscrits = list()
 		self._nombre_joueurs_inscrits = 0
-		Tournoi.__id += 1
+
 		if not hasattr(self, '_id'):
+			Tournoi.__id += 1
 			self._id = Tournoi.__id
 
 	def __str__(self):
@@ -139,4 +145,10 @@ class Tournoi:
 		else:
 			raise TournoiException(f"indice_joueur invalide : {indice_joueur}")
 
-	
+	def create(self):
+		pass
+
+	@classmethod
+	def read_all(cls):
+		return []
+		#return TournoiDAO().read_all()

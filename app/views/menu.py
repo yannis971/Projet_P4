@@ -1,12 +1,15 @@
 # -*-coding:utf-8 -*
 
+from app.utils import util
+
+
 class Menu:
 
 
     def __init__(self, liste_de_choix):
         self._choix = ""
         self._liste_de_choix = liste_de_choix
-
+        util.clear_console()
 
     def get_choix(self):
         for (i, libelle_choix) in enumerate(self._liste_de_choix):
