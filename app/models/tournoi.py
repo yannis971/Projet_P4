@@ -6,10 +6,7 @@ from app.models.exception import TournoiException
 from app.models.joueur import Joueur
 from app.utils import util
 
-class JoueurInscrit(Joueur):
-	def __init__(self):
-		self.rang = 0
-		self.nombre_de_points = 0
+
 
 
 class Tournoi:

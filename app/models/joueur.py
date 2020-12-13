@@ -14,11 +14,9 @@ class Joueur:
         for (attr_name, attr_value) in joueur_properties.items():
             setattr(self, attr_name, attr_value)
         self.check_attrs()
-        if not hasattr(self, '_id'):
-            self.id = 0
 
     def __str__(self):
-        return (f"Joueur : {self._id } {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}")
+        return (f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}")
 
     def check_attrs(self):
         for attr in Joueur.__list_attrs:

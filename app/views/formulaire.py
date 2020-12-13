@@ -5,7 +5,7 @@ from datetime import datetime
 class JoueurForm:
 
     def __init__(self):
-        pass
+        util.clear_console()
 
     def creer_joueur(self):
         dico = dict()
@@ -70,6 +70,7 @@ class TournoiForm:
 
     def __init__(self):
         self._dico = dict()
+        util.clear_console()
 
     def creer_tournoi(self):
         print("Formulaire de création de tournoi")
