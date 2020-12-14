@@ -29,7 +29,7 @@ class Joueur:
 
     @id.setter
     def id(self, value):
-        if isinstance(value, int) and value >= 0:
+        if isinstance(value, int) and value > 0:
             self._id = value
         else:
             raise JoueurException(f"id du joueur invalide : {value}")
