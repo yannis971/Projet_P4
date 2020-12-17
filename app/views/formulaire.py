@@ -5,9 +5,10 @@ from datetime import datetime
 class JoueurForm:
 
     def __init__(self):
-        util.clear_console()
+        pass
 
     def creer_joueur(self):
+        util.clear_console()
         dico = dict()
         dico['nom'] = self.get_chaine_alpha("nom")
         dico['prenom'] = self.get_chaine_alpha("prenom")
@@ -70,9 +71,9 @@ class TournoiForm:
 
     def __init__(self):
         self._dico = dict()
-        util.clear_console()
 
     def creer_tournoi(self):
+        util.clear_console()
         print("Formulaire de création de tournoi")
         self._dico['nom'] = self.get_chaine("nom") 
         self._dico['lieu'] = self.get_chaine("lieu")
@@ -92,8 +93,11 @@ class TournoiForm:
             print(f"{libelle} du tournoi invalide : {chaine}")
             return self.get_chaine(libelle)
 
-    def get_date(self, libelle, date_min):        
-        date_input = input(f"{libelle} au format SIAA-MM-JJ ex {util.encode_date(date_min)}: ").strip()
+    def get_date(self, libelle, date_min):
+        valeur_par_defaut = util.encode_date(date_min)
+        date_input = input(f"{libelle} au format SIAA-MM-JJ (par défaut {valeur_par_defaut} si aucune valeur saisie) :").strip()
+        if date_input == "":
+            date_input = valeur_par_defaut
         try:
             assert util.is_date_valid(date_input) and date_input >= util.encode_date(date_min)
         except AssertionError:
@@ -133,3 +137,37 @@ class TournoiForm:
             return self.get_controle_du_temps()
         else:
             return liste_controle_du_temps[choix]
+
+class MatchForm:
+
+    def __init__(self, match):
+        self._match = match
+
+    def mettre_a_jour_score(self):
+        print(self._match)
+        try:
+            score_1, score_2 = input("entrer le nouveau score ex 0.5 0.5 ou 1 0 ou 1.0 0.0 : ").strip().split()
+            score_1 = float(score_1)
+            score_2 = float(score_2)
+        except ValueError:
+            print("saisir 2 réels séparés d'un espace")
+            return self.mettre_a_jour_score()
+        else:
+            return score_1, score_2
+
+class TourForm:
+
+    def __init__(self):
+        pass
+
+    def iscompleted(self):
+        try:
+            validation = input("vous validez la mise à jour des scores et terminer ce tour O(oui) ou N(non) ? : ").strip().upper()
+            print(validation)
+            assert isinstance(validation, str) and validation in ['O', 'N']
+        except AssertionError:
+            print("AssertionError", validation, type(validation), len(validation))
+            return self.iscompleted()
+        else:
+            print("return validation", validation)
+            return True if validation == "O" else False

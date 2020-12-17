@@ -16,7 +16,12 @@ class Joueur:
         self.check_attrs()
 
     def __str__(self):
-        return (f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}")
+        description_joueur = f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}"
+        if hasattr(self, 'nombre_de_points'):
+            description_joueur += f" {self.nombre_de_points}"
+        if hasattr(self, 'rang'):
+            description_joueur += f" {self.rang}"
+        return description_joueur
 
     def check_attrs(self):
         for attr in Joueur.__list_attrs:
