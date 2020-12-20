@@ -177,7 +177,11 @@ class Tournoi:
         # tri par nombre de points décroissant
         self._liste_de_participants = sorted(liste_triee_par_rang, key=attrgetter('nombre_de_points'), reverse=True)
 
+    # mettre liste_matchs_deja_jouers à mettre en attribut de tournoi
+    # a incrémenter après chaque génération de paires
+
     def match_deja_joue(self, paire_de_joueurs, liste_matchs_deja_joues):
+        # cette methode est à revoir
         return paire_de_joueurs in liste_matchs_deja_joues or reversed(paire_de_joueurs) in liste_matchs_deja_joues
 
     def generer_paires_de_joueurs(self, indice_de_tour):
@@ -191,16 +195,25 @@ class Tournoi:
             liste_de_paires_de_joueurs = [list(item) for item in zip(joueurs_du_premier_tableau,
                                                                      joueurs_du_deuxieme_tableau)]
         else:
+            # faire un dictionnaire avec clé un tuple contenant les id des joueurs
             liste_matchs_deja_joues = [match.paire_de_joueurs for tour in self._liste_de_tours for match in tour.liste_de_matchs]
+            if indice_de_tour == 3:
+                print("liste de matchs deja joues")
+                for item in liste_matchs_deja_joues:
+                    print(f"{item[0].nom} - {item[1].nom}")
             liste_participants = list(self._liste_de_participants)
             while liste_participants:
+                #print("len(liste_participants) =", len(liste_participants))
                 for i in range(1, len(liste_participants), 1):
-                    paire_de_joueurs = [liste_participants[0], liste_participants[i]]
+                    paire_de_joeurs = [liste_participants[0], liste_participants[i]]
+                   #print(f"{paire_de_joueurs[0].nom} - {paire_de_joueurs[1].nom}")
                     if not self.match_deja_joue(paire_de_joueurs, liste_matchs_deja_joues):
+                        print("0", i, "append", f"{paire_de_joueurs[0].nom} - {paire_de_joueurs[1].nom}")
                         liste_de_paires_de_joueurs.append(paire_de_joueurs)
                         liste_participants.pop(i)
                         liste_participants.pop(0)
                         break
+
         return liste_de_paires_de_joueurs
 
     def creer_tour(self, indice_de_tour):
