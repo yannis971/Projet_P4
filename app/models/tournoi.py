@@ -21,6 +21,7 @@ class Tournoi:
         self._liste_indices_joueurs_inscrits = list()
         self._nombre_joueurs_inscrits = 0
         self._liste_de_participants = list()
+        self._matchs_deja_joues = dict()
 
     def __str__(self):
         return f"Tournoi : {self._nom} {self._lieu} {self._date_de_debut} {self._date_de_fin}"
@@ -180,9 +181,26 @@ class Tournoi:
     # mettre liste_matchs_deja_jouers à mettre en attribut de tournoi
     # a incrémenter après chaque génération de paires
 
-    def match_deja_joue(self, paire_de_joueurs, liste_matchs_deja_joues):
+    def match_deja_joue(self, paire_de_joueurs):
         # cette methode est à revoir
-        return paire_de_joueurs in liste_matchs_deja_joues or reversed(paire_de_joueurs) in liste_matchs_deja_joues
+        # return paire_de_joueurs in liste_matchs_deja_joues or reversed(paire_de_joueurs) in liste_matchs_deja_joues
+        cle = (paire_de_joueurs[0].id, paire_de_joueurs[1].id)
+        try:
+            return self._matchs_deja_joues[cle]
+        except KeyError:
+            cle_inverse = (paire_de_joueurs[1].id, paire_de_joueurs[0].id)
+            try:
+                return self._matchs_deja_joues[cle_inverse]
+            except KeyError:
+                return False
+
+    def intervertir_participants(self, indice):
+        indice_min = int(self._nombre_joueurs_inscrits / 2) - indice
+        indice_max = -1 - indice
+        (self._liste_de_participants[indice_min], self._liste_de_participants[indice_max]) = \
+            (self._liste_de_participants[indice_max], self._liste_de_participants[indice_min])
+
+
 
     def generer_paires_de_joueurs(self, indice_de_tour):
         self.trier_liste_de_participants()
@@ -195,24 +213,28 @@ class Tournoi:
             liste_de_paires_de_joueurs = [list(item) for item in zip(joueurs_du_premier_tableau,
                                                                      joueurs_du_deuxieme_tableau)]
         else:
-            # faire un dictionnaire avec clé un tuple contenant les id des joueurs
-            liste_matchs_deja_joues = [match.paire_de_joueurs for tour in self._liste_de_tours for match in tour.liste_de_matchs]
-            if indice_de_tour == 3:
-                print("liste de matchs deja joues")
-                for item in liste_matchs_deja_joues:
-                    print(f"{item[0].nom} - {item[1].nom}")
             liste_participants = list(self._liste_de_participants)
+            indice_inversion = 0
             while liste_participants:
                 #print("len(liste_participants) =", len(liste_participants))
                 for i in range(1, len(liste_participants), 1):
-                    paire_de_joeurs = [liste_participants[0], liste_participants[i]]
-                   #print(f"{paire_de_joueurs[0].nom} - {paire_de_joueurs[1].nom}")
-                    if not self.match_deja_joue(paire_de_joueurs, liste_matchs_deja_joues):
-                        print("0", i, "append", f"{paire_de_joueurs[0].nom} - {paire_de_joueurs[1].nom}")
+                    paire_de_joueurs = [liste_participants[0], liste_participants[i]]
+                    if not self.match_deja_joue(paire_de_joueurs):
+                        if indice_de_tour == 3:
+                            print("append", paire_de_joueurs[0].nom, paire_de_joueurs[1].nom )
                         liste_de_paires_de_joueurs.append(paire_de_joueurs)
                         liste_participants.pop(i)
                         liste_participants.pop(0)
                         break
+                    elif len(liste_participants) == 2 and indice_inversion < int(self._nombre_joueurs_inscrits/2):
+                        self.intervertir_participants(indice_inversion)
+                        liste_de_paires_de_joueurs = list()
+                        liste_participants = list(self._liste_de_participants)
+                        indice_inversion += 1
+
+
+
+
 
         return liste_de_paires_de_joueurs
 
@@ -223,6 +245,9 @@ class Tournoi:
         tour.liste_de_matchs = [Match(*paire_de_joueurs) for paire_de_joueurs in
                                 self.generer_paires_de_joueurs(indice_de_tour)]
         self._liste_de_tours.append(tour)
+        for match in tour.liste_de_matchs:
+            cle = (match.paire_de_joueurs[0].id, match.paire_de_joueurs[1].id)
+            self._matchs_deja_joues[cle] = True
 
     def create(self):
         pass
