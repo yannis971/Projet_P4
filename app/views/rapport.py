@@ -13,5 +13,5 @@ class ListView:
 		print(self._title)
 		for i, item in enumerate(self._liste_items):
 			print(f"indice : {i} - item : {item}")
-		input("appuyer la touche entrer  pour revenir au menu ... ")
-		util.clear_console()
+		#input("appuyer la touche entrer  pour revenir au menu ... ")
+		#util.clear_console()

@@ -1,5 +1,6 @@
 # -*-coding:utf-8 -*
 
+from datetime import datetime
 from app.models.exception import TourException
 from app.models.match import Match
 from app.utils import util
@@ -7,16 +8,17 @@ from app.utils import util
 
 class Tour:
 
-    __list_attrs = ['_nom', '_date_heure_debut', 'date_heure_de_fin' ]
+    __list_attrs = ['_nom', '_date_heure_debut', '_date_heure_fin' ]
 
     def __init__(self, **joueur_properties):
         for (attr_name, attr_value) in joueur_properties.items():
             setattr(self, attr_name, attr_value)
         self.check_attrs()
         self._liste_de_matchs = list()
+        self._statut = "en cours"
 
     def __str__(self):
-        return (f"Tour: {self._nom} {self._date_heure_debut} {self._date_heure_fin}")
+        return (f"Tour: {self._nom} {self._date_heure_debut} {self._date_heure_fin} {self.statut}")
 
     def check_attrs(self):
         for attr in Tour.__list_attrs:
@@ -88,3 +90,18 @@ class Tour:
         self._liste_de_matchs = []
         for value in values:
             self.ajouter_match(value)
+
+    @property
+    def statut(self):
+        return self._statut
+
+    @statut.setter
+    def statut(self, value):
+        if isinstance(value, str) and value in ["en cours", "terminé"]:
+            self._statut = value
+        else:
+            raise TourException(f"statut du tour invalide : {value}")
+
+    def cloturer(self):
+        self._date_heure_fin = util.encode_date_heure(datetime.now())
+        self._statut = "terminé"

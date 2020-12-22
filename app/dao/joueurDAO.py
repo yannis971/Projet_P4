@@ -30,8 +30,6 @@ class JoueurDAO:
         joueur = Query()
         table = JoueurDAO._table_joueurs
         item = table.search((joueur.nom == nom) & (joueur.prenom == prenom) & (joueur.date_de_naissance == date_de_naissance))
-        doc = item[0]
-        print("doc.doc_id :", doc.doc_id, "/ type(doc.doc_id) :", type(doc.doc_id))
         if item:
             return jx.Joueur(**item[0])
         else:
