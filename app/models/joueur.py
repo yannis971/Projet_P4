@@ -19,8 +19,6 @@ class Joueur:
         description_joueur = f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}"
         if hasattr(self, 'nombre_de_points'):
             description_joueur += f" {self.nombre_de_points}"
-        if hasattr(self, 'rang'):
-            description_joueur += f" {self.rang}"
         return description_joueur
 
     def check_attrs(self):
@@ -111,38 +109,7 @@ class Joueur:
 
     @classmethod
     def read_by_index(cls, nom, prenom, date_de_naissance):
-        return JoueurDAO().read(nom, prenom, date_de_naissance)
+        return JoueurDAO().read_by_index(nom, prenom, date_de_naissance)
 
     def update(self):
         JoueurDAO().update(self)
-
-    def delete(self):
-        JoueurDAO().delete(self)
-        del(self)
-
-if __name__ == "__main__":
-    #running controller function
-    dico = dict()
-    dico['nom'] = "saliniere"
-    dico['prenom'] = "yannis"
-    dico['date_de_naissance'] = "1977-05-03"
-    dico['sexe'] = "M"
-    dico['classement'] = 1
-    a = Joueur(**dico)
-    print(a)
-    print(a.nom)
-    print(a.date_de_naissance)
-    a.classement = 2
-    print(a)
-
-    b = Joueur(classemen=3, prenom="jason", nom="statham", date_de_naissance="1977-05-03", sexe="M")
-    print(b)
-    dico = {'classement': 4, 'prenom': "jean", 'nom': "dico", 'date_de_naissance': "1977-05-03", 'sexe': "M"}
-    c = Joueur(**dico)
-    print(c)
-    c.date_de_naissance = "1977-05-31"
-    c.id = 5
-    print(c)
-
-    d = Joueur(id=12, classement=3, prenom="jason", nom="statham", date_de_naissance="1977-05-03", sexe="M")
-    print(d)

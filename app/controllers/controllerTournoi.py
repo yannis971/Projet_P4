@@ -11,44 +11,23 @@ from app.models import exception
 
 
 class ControllerTournoi:
-    __liste_de_choix = ('Créer un joueur', 'Créer un tournoi', 'Ajouter 8 joueurs',
+    __liste_de_choix = ('Créer un tournoi', 'Ajouter 8 joueurs',
                         'Générer des paires de joueurs', 'Entrer les résultats',
-                        'Afficher la liste des joueurs',
-                        'Afficher les rapports', 'Enregistrer', 'Quitter')
+                        'Enregistrer', 'Quitter')
 
     def __init__(self):
         self._menu = Menu(ControllerTournoi.__liste_de_choix)
         self._choix = self._menu.get_choix()
         self._liste_joueurs = Joueur.read_all()
-        self._liste_tournois = Tournoi.read_all()
         self._tournoi = None
-
-    def creer_joueur_handler(self):
-        try:
-            joueur = Joueur(**JoueurForm().creer_joueur())
-            self._liste_joueurs.append(joueur)
-            joueur.create()
-        except exception.JoueurException as ex:
-            print(ex)
-            return self.creer_joueur_handler()
-        except exception.JoueurDAOException as ex:
-            print(ex)
-            print(f"création joueur KO - {joueur}")
-        else:
-            print(f"création joueur OK - {joueur}")
-
-    def afficher_liste_joueurs_handler(self):
-        ListView("Liste de joueurs", self._liste_joueurs).display()
 
     def creer_tournoi_handler(self):
         try:
             self._tournoi = Tournoi(**TournoiForm().creer_tournoi())
-            print(self._tournoi.__dict__)
         except exception.TournoiException as ex:
             print(ex)
             return self.creer_tournoi_handler()
         else:
-            self._liste_tournois.append(self._tournoi)
             print(f"création tournoi ok - {self._tournoi}")
 
     def ajouter_n_joueurs(self):
@@ -61,14 +40,12 @@ class ControllerTournoi:
                 assert indice >= 0 and indice < len(self._liste_joueurs)
             except AssertionError:
                 print(f"au moins un indice non valide dans la liste : {liste_indices_joueurs_inscrits}")
-                self._tournoi._liste_indices_joueurs_inscrits = list()
-                self._tournoi._nombre_joueurs_inscrits = 0
+                #self._tournoi._liste_indices_joueurs_inscrits = list()
+                self._tournoi._nombre_de_joueurs_inscrits = 0
                 return self.ajouter_n_joueurs()
             else:
-                self._tournoi.ajouter_joueur(indice)
+                #self._tournoi.ajouter_joueur(indice)
                 self._tournoi.ajouter_participant(self._liste_joueurs[indice])
-
-        self._tournoi.initialiser_rang_participants()
 
     def generer_des_paires_de_joueurs(self):
         try:
@@ -78,7 +55,7 @@ class ControllerTournoi:
                 raise exception.TournoiException(f"Option impossible : {self._tournoi.nombre_de_tours} sont déjà créés.")
             elif len(self._tournoi.liste_de_tours) > 0 and self._tournoi.liste_de_tours[-1].statut == "en cours":
                 raise exception.TournoiException(f"Option impossible : tour {self._tournoi.liste_de_tours[-1].nom} est en cours")
-            elif self._tournoi.nombre_joueurs_inscrits == 0:
+            elif self._tournoi.nombre_de_joueurs_inscrits == 0:
                 raise exception.TournoiException(f"Option impossible : vous devez d'abord ajouter des joueurs au tournoi")
             else:
                 self._tournoi.creer_tour(len(self._tournoi.liste_de_tours))
@@ -118,13 +95,19 @@ class ControllerTournoi:
         ListView(f"Liste des matchs du {tour.nom}", tour.liste_de_matchs).display()
         self.confirmer_resultats_du_tour(tour)
 
+    def enregistrer(self):
+        self._tournoi.update()
 
-    __handlers = {'0': creer_joueur_handler, '1': creer_tournoi_handler,
-                  '2': ajouter_n_joueurs, '3': generer_des_paires_de_joueurs,
-                  '4': entrer_les_resultats, '5': afficher_liste_joueurs_handler}
+
+    def quitter(self):
+        print("Fin du sous-programme tournoi")
+        exit()
+
+    __handlers = {'0': creer_tournoi_handler, '1': ajouter_n_joueurs, '2': generer_des_paires_de_joueurs,
+                  '3': entrer_les_resultats, '4': enregistrer, '5': quitter}
 
     def start(self):
-        while ControllerTournoi.__liste_de_choix[self._choix] != 'Quitter':
+        while ControllerTournoi.__liste_de_choix[self._choix]:
             ControllerTournoi.__handlers[str(self._choix)](self)
             self._choix = self._menu.get_choix()
 

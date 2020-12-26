@@ -2,6 +2,8 @@
 
 from datetime import datetime
 from operator import attrgetter
+
+from app.dao.tournoiDAO import TournoiDAO
 from app.models.exception import TournoiException
 from app.models.joueur import Joueur
 from app.models.tour import Tour
@@ -18,10 +20,12 @@ class Tournoi:
             setattr(self, attr_name, attr_value)
         self.check_attrs()
         self._liste_de_tours = list()
-        self._liste_indices_joueurs_inscrits = list()
-        self._nombre_joueurs_inscrits = 0
+        self._nombre_de_joueurs_inscrits = 0
         self._liste_de_participants = list()
-        self._matchs_deja_joues = dict()
+        if not hasattr(self, '_statut'):
+            self._statut = "en cours"
+        if not hasattr(self, '_matchs_deja_joues'):
+            self._matchs_deja_joues = dict()
 
     def __str__(self):
         return f"Tournoi : {self._nom} {self._lieu} {self._date_de_debut} {self._date_de_fin}"
@@ -132,70 +136,97 @@ class Tournoi:
             raise TournoiException(f"description invalide ou inférieure à 8 caractères : {value}")
 
     @property
-    def nombre_joueurs_inscrits(self):
-        return self._nombre_joueurs_inscrits
+    def nombre_de_joueurs_inscrits(self):
+        return self._nombre_de_joueurs_inscrits
+
+    @nombre_de_joueurs_inscrits.setter
+    def nombre_de_joueurs_inscrits(self, value):
+        if isinstance(value, int) and value >= 0:
+            self._nombre_de_joueurs_inscrits = value
+        else:
+            raise TournoiException(f"nombre_de_joueurs_inscrits invalide : {value}")
 
     @property
     def liste_de_participants(self):
         self.trier_liste_de_participants()
         return self._liste_de_participants
 
-    def ajouter_joueur(self, indice_joueur):
-        if isinstance(indice_joueur, int) and indice_joueur >= 0:
-            if indice_joueur in self._liste_indices_joueurs_inscrits:
-                raise TournoiException(f"joueur indice {indice_joueur} déjà inscrit au tournoi")
-            else:
-                self._liste_indices_joueurs_inscrits.append(indice_joueur)
-                self._nombre_joueurs_inscrits += 1
+    @property
+    def statut(self):
+        return self._statut
+
+    @statut.setter
+    def statut(self, value):
+        if isinstance(value, str) and value in ["en cours", "terminé"]:
+            self._statut = value
         else:
-            raise TournoiException(f"indice_joueur invalide : {indice_joueur}")
+            raise TournoiException(f"statut du tournoi invalide : {value}")
+
+    @property
+    def matchs_deja_joues(self):
+        return self._matchs_deja_joues
+
+    @matchs_deja_joues.setter
+    def matchs_deja_joues(self, value):
+        if isinstance(value, dict):
+            self._matchs_deja_joues = value
+        else:
+            raise TournoiException(f"matches_deja_joues invalide : {value}")
+
+
+    def cloturer(self):
+        self._date_de_fin = util.encode_date(datetime.now())
+        self._statut = "terminé"
+
+    #def ajouter_joueur(self, indice_joueur):
+        #if isinstance(indice_joueur, int) and indice_joueur >= 0:
+            #if indice_joueur in self._liste_indices_joueurs_inscrits:
+                #raise TournoiException(f"joueur indice {indice_joueur} déjà inscrit au tournoi")
+            #else:
+                #self._liste_indices_joueurs_inscrits.append(indice_joueur)
+                #self._nombre_de_joueurs_inscrits += 1
+        #else:
+            #raise TournoiException(f"indice_joueur invalide : {indice_joueur}")
 
     def ajouter_participant(self, joueur):
         if isinstance(joueur, Joueur):
             if joueur in self._liste_de_participants:
                 raise TournoiException(f"joueur {joueur} déjà inscrit au tournoi")
             else:
-                joueur.rang = 0
                 joueur.nombre_de_points = 0
                 self._liste_de_participants.append(joueur)
+                self._nombre_de_joueurs_inscrits += 1
         else:
             raise TournoiException(f"ajouter_participant attend une instance de joueur en paramètre: {joueur}")
-
-    def initialiser_rang_participants(self):
-        self._liste_de_participants.sort(key=attrgetter('classement'))
-        rang = 1
-        for joueur in self._liste_de_participants:
-            joueur.rang = rang
-            rang += 1
 
     def trier_liste_de_participants(self):
         """
         Méthode qui va trier la liste des participants au tournoi sur le nombre de points décroissant
-        En cas d'égalité sur le nombre de points, on trie sur le rang dans l'ordre ascendant
+        En cas d'égalité sur le nombre de points, on trie sur le classement dans l'ordre ascendant
         """
-        # tri par rang croissant
-        liste_triee_par_rang = sorted(self._liste_de_participants, key=attrgetter('rang'))
+        # tri par classement croissant
+        liste_triee_par_classement = sorted(self._liste_de_participants, key=attrgetter('classement'))
         # tri par nombre de points décroissant
-        self._liste_de_participants = sorted(liste_triee_par_rang, key=attrgetter('nombre_de_points'), reverse=True)
+        self._liste_de_participants = sorted(liste_triee_par_classement, key=attrgetter('nombre_de_points'), reverse=True)
 
     # mettre liste_matchs_deja_jouers à mettre en attribut de tournoi
     # a incrémenter après chaque génération de paires
 
     def match_deja_joue(self, paire_de_joueurs):
         # cette methode est à revoir
-        # return paire_de_joueurs in liste_matchs_deja_joues or reversed(paire_de_joueurs) in liste_matchs_deja_joues
-        cle = (paire_de_joueurs[0].id, paire_de_joueurs[1].id)
+        #return paire_de_joueurs in liste_matchs_deja_joues or reversed(paire_de_joueurs) in liste_matchs_deja_joues
+        cle = f"{paire_de_joueurs[0].id} {paire_de_joueurs[1].id}"
         try:
             return self._matchs_deja_joues[cle]
         except KeyError:
-            cle_inverse = (paire_de_joueurs[1].id, paire_de_joueurs[0].id)
+            cle_inverse = f"{paire_de_joueurs[1].id} {paire_de_joueurs[0].id}"
             try:
                 return self._matchs_deja_joues[cle_inverse]
             except KeyError:
                 return False
 
     def intervertir_participants(self, indice):
-        indice_min = int(self._nombre_joueurs_inscrits / 2) - indice
+        indice_min = int(self._nombre_de_joueurs_inscrits / 2) - indice
         indice_max = -1 - indice
         (self._liste_de_participants[indice_min], self._liste_de_participants[indice_max]) = \
             (self._liste_de_participants[indice_max], self._liste_de_participants[indice_min])
@@ -207,7 +238,7 @@ class Tournoi:
         liste_de_paires_de_joueurs = list()
 
         if indice_de_tour == 0:
-            indice_separateur = int(self._nombre_joueurs_inscrits/2)
+            indice_separateur = int(self._nombre_de_joueurs_inscrits/2)
             joueurs_du_premier_tableau = self._liste_de_participants[:indice_separateur]
             joueurs_du_deuxieme_tableau = self._liste_de_participants[indice_separateur:]
             liste_de_paires_de_joueurs = [list(item) for item in zip(joueurs_du_premier_tableau,
@@ -226,15 +257,11 @@ class Tournoi:
                         liste_participants.pop(i)
                         liste_participants.pop(0)
                         break
-                    elif len(liste_participants) == 2 and indice_inversion < int(self._nombre_joueurs_inscrits/2):
+                    elif len(liste_participants) == 2 and indice_inversion < int(self._nombre_de_joueurs_inscrits/2):
                         self.intervertir_participants(indice_inversion)
                         liste_de_paires_de_joueurs = list()
                         liste_participants = list(self._liste_de_participants)
                         indice_inversion += 1
-
-
-
-
 
         return liste_de_paires_de_joueurs
 
@@ -246,13 +273,19 @@ class Tournoi:
                                 self.generer_paires_de_joueurs(indice_de_tour)]
         self._liste_de_tours.append(tour)
         for match in tour.liste_de_matchs:
-            cle = (match.paire_de_joueurs[0].id, match.paire_de_joueurs[1].id)
-            self._matchs_deja_joues[cle] = True
+            cle = f"{match.paire_de_joueurs[0].id} {match.paire_de_joueurs[1].id}"
+            self._matchs_deja_joues[cle] = 1
 
     def create(self):
-        pass
+        TournoiDAO().create(self)
 
     @classmethod
     def read_all(cls):
-        return []
-    # return TournoiDAO().read_all()
+        return TournoiDAO().read_all()
+
+    @classmethod
+    def read_by_index(cls, nom, lieu, date_de_debut):
+        return TournoiDAO().read_by_index(nom, lieu, date_de_debut)
+
+    def update(self):
+        TournoiDAO().update(self)

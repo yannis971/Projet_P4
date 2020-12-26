@@ -66,3 +66,9 @@ def encode_date_heure(date_time):
 def is_chaine_alpha_valide(chaine):
     pattern_nom_prenom = "^[A-Z][A-Za-z\é\è\ê\ë\ç\ï\ô\-]+$"
     return (isinstance(chaine, str) and len(chaine) > 1 and re.match(pattern_nom_prenom, chaine))
+
+def left_justified(liste_de_chaines):
+    length_max = max(len(chaine) for chaine in liste_de_chaines)
+    for chaine in liste_de_chaines:
+        chaine = chaine.ljust(length_max, " ")
+        yield chaine

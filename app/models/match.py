@@ -4,7 +4,7 @@ from app.models.joueur import Joueur
 
 class Match:
 
-    __scores_autorises = [(0.0, 1.0), (0.5, 0.5), (1.0, 0.0)]
+    __scores_autorises = [(0.0, 1.0), (0.5, 0.5), (1.0, 0.0), (0.0, 0.0)]
 
     def __init__(self, *paire_de_joueurs):
         self._paire_de_joueurs = [item for item in paire_de_joueurs if isinstance(item, Joueur)]
@@ -24,6 +24,10 @@ class Match:
     @property
     def paire_de_joueurs(self):
         return self._paire_de_joueurs
+
+    @property
+    def score(self):
+        return self._score
 
     @id.setter
     def id(self, value):

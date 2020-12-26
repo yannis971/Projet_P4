@@ -1,3 +1,322 @@
-{"table_joueurs": {"1": {"nom": "Saliniere", "prenom": "Yannis", "sexe": "M", "date_de_naissance": "1977-05-03", "classement": 1, "id": 1}, "2": {"nom": "Doe", "prenom": "John", "sexe": "M", "date_de_naissance": "2001-09-11", "classement": 2, "id": 2}, "3": {"nom": "Bruny", "prenom": "Karla", "sexe": "F", "date_de_naissance": "1992-02-21", "classement": 3, "id": 3}, "4": {"nom": "Blak", "prenom": "Max", "sexe": "M", "date_de_naissance": "2000-01-01", "classement": 4, "id": 4}, "5": {"nom": "White", "prenom": "Max", "sexe": "M", "date_de_naissance": "2000-01-01", "classement": 5, "id": 5}, "6": {"nom": "Rabbit", "prenom": "Max", "sexe": "M", "date_de_naissance": "2000-01-01", "classement": 6, "id": 6}, "7": {"nom": "Dede", "prenom": "Maurice", "sexe": "M", "date_de_naissance": "2000-01-01", "classement": 7, "id": 7},
-  "8": {"nom": "Aldo", "prenom": "Max", "sexe": "M", "date_de_naissance": "2000-01-01", "classement": 8, "id": 8},
-  "9": {"nom": "Bros", "prenom": "Mario", "sexe": "M", "date_de_naissance": "1983-12-24", "classement": 9, "id": 9}}}
+{
+    "liens_match_tour": {
+        "10": {
+            "id": 9,
+            "id_joueur_1": 1,
+            "id_joueur_2": 9,
+            "id_tour": 3,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "12": {
+            "id": 11,
+            "id_joueur_1": 10,
+            "id_joueur_2": 4,
+            "id_tour": 3,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "14": {
+            "id": 13,
+            "id_joueur_1": 2,
+            "id_joueur_2": 5,
+            "id_tour": 3,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "16": {
+            "id": 15,
+            "id_joueur_1": 7,
+            "id_joueur_2": 8,
+            "id_tour": 3,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "18": {
+            "id": 17,
+            "id_joueur_1": 1,
+            "id_joueur_2": 7,
+            "id_tour": 5,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "2": {
+            "id": 1,
+            "id_joueur_1": 1,
+            "id_joueur_2": 8,
+            "id_tour": 1,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "20": {
+            "id": 19,
+            "id_joueur_1": 9,
+            "id_joueur_2": 10,
+            "id_tour": 5,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "22": {
+            "id": 21,
+            "id_joueur_1": 4,
+            "id_joueur_2": 2,
+            "id_tour": 5,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "24": {
+            "id": 23,
+            "id_joueur_1": 5,
+            "id_joueur_2": 8,
+            "id_tour": 5,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "26": {
+            "id": 25,
+            "id_joueur_1": 1,
+            "id_joueur_2": 4,
+            "id_tour": 7,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "28": {
+            "id": 27,
+            "id_joueur_1": 9,
+            "id_joueur_2": 8,
+            "id_tour": 7,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "30": {
+            "id": 29,
+            "id_joueur_1": 5,
+            "id_joueur_2": 7,
+            "id_tour": 7,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "32": {
+            "id": 31,
+            "id_joueur_1": 2,
+            "id_joueur_2": 10,
+            "id_tour": 7,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "4": {
+            "id": 3,
+            "id_joueur_1": 2,
+            "id_joueur_2": 9,
+            "id_tour": 1,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "6": {
+            "id": 5,
+            "id_joueur_1": 5,
+            "id_joueur_2": 10,
+            "id_tour": 1,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "8": {
+            "id": 7,
+            "id_joueur_1": 7,
+            "id_joueur_2": 4,
+            "id_tour": 1,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        }
+    },
+    "liens_participant_tournoi": {
+        "1": {
+            "id": 1,
+            "id_tournoi": 1,
+            "nombre_de_points": 3.5
+        },
+        "2": {
+            "id": 2,
+            "id_tournoi": 1,
+            "nombre_de_points": 1.5
+        },
+        "3": {
+            "id": 5,
+            "id_tournoi": 1,
+            "nombre_de_points": 1.0
+        },
+        "4": {
+            "id": 7,
+            "id_tournoi": 1,
+            "nombre_de_points": 2.5
+        },
+        "5": {
+            "id": 8,
+            "id_tournoi": 1,
+            "nombre_de_points": 1.0
+        },
+        "6": {
+            "id": 9,
+            "id_tournoi": 1,
+            "nombre_de_points": 3.5
+        },
+        "7": {
+            "id": 10,
+            "id_tournoi": 1,
+            "nombre_de_points": 3.5
+        },
+        "8": {
+            "id": 4,
+            "id_tournoi": 1,
+            "nombre_de_points": 3.5
+        }
+    },
+    "liens_tour_tournoi": {
+        "2": {
+            "date_heure_debut": "2020-12-26T21:01:11",
+            "date_heure_fin": "2020-12-26T21:01:33",
+            "id": 1,
+            "id_tournoi": 1,
+            "nom": "Round 1",
+            "statut": "termin\u00e9"
+        },
+        "4": {
+            "date_heure_debut": "2020-12-26T21:01:42",
+            "date_heure_fin": "2020-12-26T21:04:07",
+            "id": 3,
+            "id_tournoi": 1,
+            "nom": "Round 2",
+            "statut": "termin\u00e9"
+        },
+        "6": {
+            "date_heure_debut": "2020-12-26T21:04:20",
+            "date_heure_fin": "2020-12-26T21:05:18",
+            "id": 5,
+            "id_tournoi": 1,
+            "nom": "Round 3",
+            "statut": "termin\u00e9"
+        },
+        "8": {
+            "date_heure_debut": "2020-12-26T21:05:44",
+            "date_heure_fin": "2020-12-26T21:08:07",
+            "id": 7,
+            "id_tournoi": 1,
+            "nom": "Round 4",
+            "statut": "termin\u00e9"
+        }
+    },
+    "table_joueurs": {
+        "1": {
+            "classement": 1,
+            "date_de_naissance": "1977-05-03",
+            "id": 1,
+            "nom": "Saliniere",
+            "prenom": "Yannis",
+            "sexe": "M"
+        },
+        "10": {
+            "classement": 11,
+            "date_de_naissance": "1990-01-05",
+            "id": 10,
+            "nom": "Gotti",
+            "prenom": "John",
+            "sexe": "M"
+        },
+        "2": {
+            "classement": 2,
+            "date_de_naissance": "2001-09-11",
+            "id": 2,
+            "nom": "Doe",
+            "prenom": "John",
+            "sexe": "M"
+        },
+        "3": {
+            "classement": 3,
+            "date_de_naissance": "1992-02-21",
+            "id": 3,
+            "nom": "Bruny",
+            "prenom": "Karla",
+            "sexe": "F"
+        },
+        "4": {
+            "classement": 12,
+            "date_de_naissance": "2000-01-01",
+            "id": 4,
+            "nom": "Blak",
+            "prenom": "Max",
+            "sexe": "M"
+        },
+        "5": {
+            "classement": 5,
+            "date_de_naissance": "2000-01-01",
+            "id": 5,
+            "nom": "White",
+            "prenom": "Max",
+            "sexe": "M"
+        },
+        "6": {
+            "classement": 6,
+            "date_de_naissance": "2000-01-01",
+            "id": 6,
+            "nom": "Rabbit",
+            "prenom": "Max",
+            "sexe": "M"
+        },
+        "7": {
+            "classement": 7,
+            "date_de_naissance": "2000-01-01",
+            "id": 7,
+            "nom": "Dede",
+            "prenom": "Maurice",
+            "sexe": "M"
+        },
+        "8": {
+            "classement": 8,
+            "date_de_naissance": "2000-01-01",
+            "id": 8,
+            "nom": "Aldo",
+            "prenom": "Max",
+            "sexe": "M"
+        },
+        "9": {
+            "classement": 9,
+            "date_de_naissance": "1983-12-24",
+            "id": 9,
+            "nom": "Bros",
+            "prenom": "Mario",
+            "sexe": "M"
+        }
+    },
+    "table_tournois": {
+        "2": {
+            "controle_du_temps": "bullet",
+            "date_de_debut": "2020-12-26",
+            "date_de_fin": "2020-12-26",
+            "description": "tournoi de miami florida",
+            "id": 1,
+            "lieu": "miami",
+            "matchs_deja_joues": {
+                "1 4": 1,
+                "1 7": 1,
+                "1 8": 1,
+                "1 9": 1,
+                "10 4": 1,
+                "2 10": 1,
+                "2 5": 1,
+                "2 9": 1,
+                "4 2": 1,
+                "5 10": 1,
+                "5 7": 1,
+                "5 8": 1,
+                "7 4": 1,
+                "7 8": 1,
+                "9 10": 1,
+                "9 8": 1
+            },
+            "nom": "tournoi de miami",
+            "nombre_de_joueurs_inscrits": 8,
+            "nombre_de_tours": 4,
+            "statut": "en cours"
+        }
+    }
+}

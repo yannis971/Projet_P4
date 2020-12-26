@@ -67,6 +67,15 @@ class JoueurForm:
         else:
             return liste_indices
 
+    def recuperer_identifiants_joueur(self):
+        identifiants_joueur = dict()
+        print("Entrer les identifiants du joueur")
+        identifiants_joueur['nom'] = self.get_chaine_alpha("nom")
+        identifiants_joueur['prenom'] = self.get_chaine_alpha("prenom")
+        identifiants_joueur['date_de_naissance'] = self.get_date_de_naissance()
+        return identifiants_joueur
+
+
 class TournoiForm:
 
     def __init__(self):
@@ -163,7 +172,6 @@ class TourForm:
     def iscompleted(self):
         try:
             validation = input("vous validez la mise à jour des scores et terminer ce tour O(oui) ou N(non) ? : ").strip().upper()
-            print(validation)
             assert isinstance(validation, str) and validation in ['O', 'N']
         except AssertionError:
             print("AssertionError", validation, type(validation), len(validation))
@@ -171,3 +179,32 @@ class TourForm:
         else:
             print("return validation", validation)
             return True if validation == "O" else False
+
+class RapportForm:
+    def __init__(self):
+        pass
+
+    def recuperer_identifiants_tournoi(self):
+        identifiants_tournoi = dict()
+        date_min = util.encode_date("1970-01-01")
+        print("Entrer les identifiants du tournoi")
+        identifiants_tournoi['nom'] = self.get_chaine("nom")
+        identifiants_tournoi['lieu'] = self.get_chaine("lieu")
+        identifiants_tournoi['date_de_debut'] = self.get_date("date de début", date_min)
+        return identifiants_tournoi
+
+    def recuperer_criteres_de_tri(self):
+        print("vous souhaitez trier la liste :")
+        print("0 - par ordre alphabétique")
+        print("1 - par classement")
+        try:
+            choix = input("votre choix : 0 ou 1 ?").strip()
+            assert isinstance(choix, str) and choix in ['0', '1']
+        except AssertionError:
+            return self.recuperer_criteres_de_tri()
+        criteres_de_tri = list()
+        if choix == '0':
+            criteres_de_tri.extend(['nom', 'prenom'])
+        else:
+            criteres_de_tri.append('classement')
+        return criteres_de_tri

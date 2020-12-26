@@ -15,7 +15,8 @@ class Tour:
             setattr(self, attr_name, attr_value)
         self.check_attrs()
         self._liste_de_matchs = list()
-        self._statut = "en cours"
+        if not hasattr(self, '_statut'):
+            self._statut = "en cours"
 
     def __str__(self):
         return (f"Tour: {self._nom} {self._date_heure_debut} {self._date_heure_fin} {self.statut}")
