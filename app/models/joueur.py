@@ -17,6 +17,8 @@ class Joueur:
 
     def __str__(self):
         description_joueur = f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}"
+        if hasattr(self, 'rang'):
+            description_joueur += f" {self.rang}"
         if hasattr(self, 'nombre_de_points'):
             description_joueur += f" {self.nombre_de_points}"
         return description_joueur

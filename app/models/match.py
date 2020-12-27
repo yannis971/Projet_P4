@@ -14,12 +14,19 @@ class Match:
         except AssertionError:
             raise MatchException(f"Impossible de créer une instance de Match avec autre chose qu'une liste de 2 Joueurs {paire_de_joueurs}")
 
-    def __repr__(self):
+    def __str__(self):
         return (f"{self._paire_de_joueurs[0].nom} - {self._paire_de_joueurs[1].nom} : {self._score[0]} - {self._score[1]}")
 
     @property
     def id(self):
         return self._id
+
+    @id.setter
+    def id(self, value):
+        if isinstance(value, int) and value >= 0:
+            self._id = value
+        else:
+            raise MatchException(f"id du match invalide : {value}")
 
     @property
     def paire_de_joueurs(self):

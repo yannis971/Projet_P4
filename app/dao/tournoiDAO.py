@@ -48,8 +48,6 @@ class TournoiDAO:
         table = TournoiDAO._table_tournois
         item = table.search((tournoi.nom == nom) & (tournoi.lieu == lieu) & (tournoi.date_de_debut == date_de_debut))
         if item:
-            print("tournoiDAO.read_by_index - item :", item)
-            print("tournoiDAO.read_by_index - item[0] :", item[0])
             return self.generer_instance_tournoi(**item[0])
         else:
             raise TournoiDAOException(f"Le tournoi n'existe pas dans la base de données : {nom} {lieu} {date_de_debut}")
@@ -96,11 +94,11 @@ class TournoiDAO:
         for document in liste_de_documents:
             joueur = JoueurDAO().read(document['id'])
             joueur.nombre_de_points = document['nombre_de_points']
+            joueur.rang = document['rang']
             liste_de_participants.append(joueur)
         return liste_de_participants
 
     def generer_instance_tournoi(self, **document):
-        print("tournoiDAO.generer_instance_tournoi", document)
         tournoi = tx.Tournoi(**document)
         tournoi._liste_de_tours = TourDAO().read_by_id_tournoi(tournoi.id)
         tournoi._liste_de_participants = self.recuperer_participants_tournoi(tournoi.id)

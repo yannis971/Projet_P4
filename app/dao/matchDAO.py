@@ -70,6 +70,7 @@ class MatchDAO:
         deuxieme_joueur.nombre_de_points = 0.0
         paires_de_joueurs = [premier_joueur, deuxieme_joueur]
         match = mx.Match(*paires_de_joueurs)
+        match.id = document['id']
         match.update_score(document['score_joueur_1'], document['score_joueur_2'])
         return match
 

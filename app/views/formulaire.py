@@ -2,7 +2,42 @@
 from app.utils import util
 from datetime import datetime
 
-class JoueurForm:
+class BaseForm:
+
+    def __init__(self):
+        pass
+
+    def get_chaine_alpha(self, libelle):
+        chaine = input(f"{libelle} : ").strip().capitalize()
+        if not util.is_chaine_alpha_valide(chaine):
+            print(f"{libelle} invalide : {chaine}")
+            return self.get_chaine_alpha(libelle)
+        else:
+            return chaine
+
+    def get_chaine(self, libelle):
+        chaine = input(f"{libelle} : ").strip()
+        if isinstance(chaine, str) and len(chaine) > 1:
+            return chaine
+        else:
+            print(f"{libelle} invalide : {chaine}")
+            return self.get_chaine(libelle)
+
+
+    def get_date(self, libelle, date_min):
+        valeur_par_defaut = util.encode_date(date_min)
+        date_input = input(f"{libelle} au format SIAA-MM-JJ (par défaut {valeur_par_defaut} si aucune valeur saisie) :").strip()
+        if date_input == "":
+            date_input = valeur_par_defaut
+        try:
+            assert util.is_date_valid(date_input) and date_input >= util.encode_date(date_min)
+        except AssertionError:
+            print(f"la {libelle} : {date_input} est invalide ou strictement inférieure à {date_min}")
+            return self.get_date(libelle, date_min)
+        else:
+            return date_input
+
+class JoueurForm(BaseForm):
 
     def __init__(self):
         pass
@@ -16,14 +51,6 @@ class JoueurForm:
         dico['date_de_naissance'] = self.get_date_de_naissance()
         dico['classement'] = self.get_classement()
         return dico
-
-    def get_chaine_alpha(self, libelle):
-        chaine = input(f"{libelle} : ").strip().capitalize()
-        if not util.is_chaine_alpha_valide(chaine):
-            print(f"{libelle} invalide : {chaine}")
-            return self.get_chaine_alpha(libelle)
-        else:
-            return chaine
 
     def get_sexe(self):
         try:
@@ -97,7 +124,7 @@ class JoueurForm:
         else:
             return id
 
-class TournoiForm:
+class TournoiForm(BaseForm):
 
     def __init__(self):
         self._dico = dict()
@@ -113,28 +140,6 @@ class TournoiForm:
         self._dico['controle_du_temps'] = self.get_controle_du_temps()
         self._dico['description'] = self.get_chaine("description")
         return self._dico
-
-
-    def get_chaine(self, libelle):
-        chaine = input(f"{libelle} du tournoi : ").strip()
-        if isinstance(chaine, str) and len(chaine) > 1:
-            return chaine
-        else:
-            print(f"{libelle} du tournoi invalide : {chaine}")
-            return self.get_chaine(libelle)
-
-    def get_date(self, libelle, date_min):
-        valeur_par_defaut = util.encode_date(date_min)
-        date_input = input(f"{libelle} au format SIAA-MM-JJ (par défaut {valeur_par_defaut} si aucune valeur saisie) :").strip()
-        if date_input == "":
-            date_input = valeur_par_defaut
-        try:
-            assert util.is_date_valid(date_input) and date_input >= util.encode_date(date_min)
-        except AssertionError:
-            print(f"la {libelle} : {date_input} est invalide ou strictement inférieure à {date_min}")
-            return self.get_date(libelle, date_min)
-        else:           
-            return date_input
 
     def get_nombre_de_tours(self, valeur_par_defaut):
         nombre_de_tours = input(f"nombre de tours (par défaut {valeur_par_defaut} si aucune valeur saisie) :")
@@ -234,25 +239,17 @@ class TourForm:
             print("return validation", validation)
             return True if validation == "O" else False
 
-class RapportForm:
+class RapportForm(BaseForm):
+
     def __init__(self):
         pass
-
-    def recuperer_identifiants_tournoi(self):
-        identifiants_tournoi = dict()
-        date_min = util.encode_date("1970-01-01")
-        print("Entrer les identifiants du tournoi")
-        identifiants_tournoi['nom'] = self.get_chaine("nom")
-        identifiants_tournoi['lieu'] = self.get_chaine("lieu")
-        identifiants_tournoi['date_de_debut'] = self.get_date("date de début", date_min)
-        return identifiants_tournoi
 
     def recuperer_criteres_de_tri(self):
         print("vous souhaitez trier la liste :")
         print("0 - par ordre alphabétique")
         print("1 - par classement")
         try:
-            choix = input("votre choix : 0 ou 1 ?").strip()
+            choix = input("votre choix : 0 ou 1 ? ").strip()
             assert isinstance(choix, str) and choix in ['0', '1']
         except AssertionError:
             return self.recuperer_criteres_de_tri()

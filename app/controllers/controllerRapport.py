@@ -5,7 +5,7 @@ from operator import attrgetter
 from app.views.menu import Menu
 
 from app.views.rapport import ListView
-from app.views.formulaire import RapportForm
+from app.views.formulaire import RapportForm, TournoiForm
 from app.models.joueur import Joueur
 from app.models.tournoi import Tournoi
 from app.models import exception
@@ -27,10 +27,16 @@ class ControllerRapport:
         ListView("Liste de tous les acteurs", liste_des_acteurs).display()
 
     def recuperer_tournoi(self):
-        index_tournoi = RapportForm().recuperer_identifiants_tournoi()
+        methode_acces = TournoiForm().recuperer_methode_acces()
         try:
-            tournoi = Tournoi.read_by_index(**index_tournoi)
+            if methode_acces == "id":
+                tournoi = Tournoi.read(TournoiForm().recuperer_id_tournoi())
+            else:
+                tournoi = Tournoi.read_by_index(**TournoiForm().recuperer_identifiants_tournoi())
         except exception.TournoiException as ex:
+            print(ex)
+            return self.recuperer_tournoi()
+        except exception.TournoiDAOException as ex:
             print(ex)
             return self.recuperer_tournoi()
         else:
@@ -39,6 +45,8 @@ class ControllerRapport:
     def lister_tous_les_joueurs_d_un_tournoi(self):
         tournoi = self.recuperer_tournoi()
         criteres_de_tri = RapportForm().recuperer_criteres_de_tri()
+        if len(criteres_de_tri) == 1 and criteres_de_tri[0] == 'classement':
+            criteres_de_tri[0] = 'rang'
         liste_des_joueurs_du_tournoi = sorted(tournoi.liste_de_participants, key=attrgetter(*criteres_de_tri))
         ListView(f"Liste de tous les joueurs du tournoi {tournoi}", liste_des_joueurs_du_tournoi).display()
 
@@ -54,6 +62,8 @@ class ControllerRapport:
     def lister_tous_les_matchs_d_un_tournoi(self):
         tournoi = self.recuperer_tournoi()
         liste_des_tours_du_tournoi = tournoi.liste_de_tours
+        for tour in liste_des_tours_du_tournoi:
+            ListView(f"Liste des matchs du tour {tour.nom}", tour.liste_de_matchs).display()
 
     def quitter(self):
         print("Fin du sous-programme rapport")
