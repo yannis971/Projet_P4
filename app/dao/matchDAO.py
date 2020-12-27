@@ -4,6 +4,7 @@ from tinydb import TinyDB, Query
 import app.models.match as mx
 from app.dao.joueurDAO import JoueurDAO
 from app.models.exception import MatchDAOException
+from app.utils import util
 
 class MatchDAO:
 
@@ -18,14 +19,7 @@ class MatchDAO:
             raise MatchDAOException(f"Le match existe déjà dans la base de données : {match}")
         else:
             match.id = MatchDAO._liens_match_tour._get_next_id()
-            data_storage = dict()
-            data_storage['id'] = match.id
-            data_storage['id_tour'] = id_tour
-            data_storage['id_joueur_1'] = match.paire_de_joueurs[0].id
-            data_storage['score_joueur_1'] = match.score[0]
-            data_storage['id_joueur_2'] = match.paire_de_joueurs[1].id
-            data_storage['score_joueur_2'] = match.score[1]
-            MatchDAO._liens_match_tour.insert(data_storage)
+            MatchDAO._liens_match_tour.insert(util.document(self.data_match_tour(id_tour, match)))
 
     def read_all(self):
         return [self.generer_instance_match(**document) for document in MatchDAO._liens_match_tour.all()]
@@ -55,15 +49,8 @@ class MatchDAO:
             self.create(id_tour, match)
         else:
             requete = Query()
-            data_storage = dict()
-            data_storage['id'] = match.id
-            data_storage['id_tour'] = id_tour
-            data_storage['id_joueur_1'] = match.paire_de_joueurs[0].id
-            data_storage['score_joueur_1'] = match.score[0]
-            data_storage['id_joueur_2'] = match.paire_de_joueurs[1].id
-            data_storage['score_joueur_2'] = match.score[1]
-            MatchDAO._liens_match_tour.update(data_storage, (requete.id == match.id) & (requete.id_tour == id_tour))
-
+            MatchDAO._liens_match_tour.update(util.document(self.data_match_tour(id_tour, match)),
+                                              (requete.id == match.id) & (requete.id_tour == id_tour))
 
     def match_exists(self, id_tour, match):
         try:
@@ -85,3 +72,13 @@ class MatchDAO:
         match = mx.Match(*paires_de_joueurs)
         match.update_score(document['score_joueur_1'], document['score_joueur_2'])
         return match
+
+    def data_match_tour(self, id_tour, match):
+        data = dict()
+        data['id'] = match.id
+        data['id_tour'] = id_tour
+        data['id_joueur_1'] = match.paire_de_joueurs[0].id
+        data['score_joueur_1'] = match.score[0]
+        data['id_joueur_2'] = match.paire_de_joueurs[1].id
+        data['score_joueur_2'] = match.score[1]
+        return data

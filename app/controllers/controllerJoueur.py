@@ -36,9 +36,13 @@ class ControllerJoueur:
         ListView("Liste de joueurs", Joueur.read_all()).display()
 
     def recuperer_joueur(self):
-        index_joueur = JoueurForm().recuperer_identifiants_joueur()
+        methode_acces = JoueurForm().recuperer_methode_acces()
+        print("methode_acces =", methode_acces)
         try:
-            joueur = Joueur.read_by_index(**index_joueur)
+            if methode_acces == "id":
+                joueur = Joueur.read(JoueurForm().recuperer_id_joueur())
+            else:
+                joueur = Joueur.read_by_index(**JoueurForm().recuperer_identifiants_joueur())
         except exception.JoueurException as ex:
             print(ex)
             return self.recuperer_joueur()

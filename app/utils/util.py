@@ -3,7 +3,7 @@ import os
 import platform
 import re
 from datetime import datetime
-
+from tinydb.table import Document
 
 pattern_date = "[0-9]{4}-[0-9]{2}-[0-9]{2}"
 format_date = '%Y-%m-%d'
@@ -32,10 +32,8 @@ def controle_date(chaine, pattern, format):
         result = False
     return result
 
-
 def is_date_valid(chaine):
     return controle_date(chaine, pattern_date, format_date)
-
 
 def decode_date(chaine):
     if is_date_valid(chaine):
@@ -43,14 +41,11 @@ def decode_date(chaine):
     else:
         print("abend dans decode_date, chaine :", chaine)
 
-
 def encode_date(date_time):
     return date_time.strftime(format_date)
 
-
 def is_date_heure_valid(chaine):
     return controle_date(chaine, pattern_date_heure, format_date_heure)
-
 
 def decode_date_heure(chaine):
     if is_date_heure_valid(chaine):
@@ -58,10 +53,8 @@ def decode_date_heure(chaine):
     else:
         print("abend dans decode_date_heure, chaine :", chaine)
 
-
 def encode_date_heure(date_time):
     return date_time.strftime(format_date_heure)
-
 
 def is_chaine_alpha_valide(chaine):
     pattern_nom_prenom = "^[A-Z][A-Za-z\é\è\ê\ë\ç\ï\ô\-]+$"
@@ -72,3 +65,10 @@ def left_justified(liste_de_chaines):
     for chaine in liste_de_chaines:
         chaine = chaine.ljust(length_max, " ")
         yield chaine
+
+def document(object):
+    if isinstance(object, dict):
+        return Document(object, object['id'])
+    else:
+        dico = dict((attr[1:], value) for (attr, value) in object.__dict__.items() if not isinstance(value, list))
+        return Document(dico, object.id)

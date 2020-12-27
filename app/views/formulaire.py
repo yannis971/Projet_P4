@@ -67,6 +67,17 @@ class JoueurForm:
         else:
             return liste_indices
 
+    def recuperer_methode_acces(self):
+        print("comment souhaitez vous rechercher le joueur ?")
+        print("0 - par son id ?\n1 - par l'index constitué de ses nom, prénom et date de naissance ?")
+        try:
+            choix = input("votre choix : ").strip()
+            assert isinstance(choix, str) and choix in ["0", "1"]
+        except AssertionError:
+            return self.recuperer_methode_acces()
+        else:
+            return "id" if choix == "0" else "index"
+
     def recuperer_identifiants_joueur(self):
         identifiants_joueur = dict()
         print("Entrer les identifiants du joueur")
@@ -75,6 +86,16 @@ class JoueurForm:
         identifiants_joueur['date_de_naissance'] = self.get_date_de_naissance()
         return identifiants_joueur
 
+    def recuperer_id_joueur(self):
+        try:
+            id = int(input("Entrer l'id du joueur (entier strictement supérieur à 0) : "))
+            assert id > 0
+        except ValueError:
+            return self.recuperer_id_joueur()
+        except AssertionError:
+            return self.recuperer_id_joueur()
+        else:
+            return id
 
 class TournoiForm:
 
@@ -146,6 +167,39 @@ class TournoiForm:
             return self.get_controle_du_temps()
         else:
             return liste_controle_du_temps[choix]
+
+    def recuperer_methode_acces(self):
+        print("comment souhaitez vous rechercher le tournoi ?")
+        print("0 - par son id ?\n1 - par l'index constitué de ses nom, lieu et date de début ?")
+        try:
+            choix = input("votre choix : ").strip()
+            assert isinstance(choix, str) and choix in ["0", "1"]
+        except AssertionError:
+            return self.recuperer_methode_acces()
+        else:
+            return "id" if choix == "0" else "index"
+
+    def recuperer_identifiants_tournoi(self):
+        identifiants_tournoi = dict()
+        print("Entrer les identifiants du tournoi")
+        identifiants_tournoi['nom'] = self.get_chaine("nom")
+        identifiants_tournoi['lieu'] = self.get_chaine("lieu")
+        date_min = util.decode_date("1970-01-01")
+        identifiants_tournoi['date_de_debut'] = self.get_date("date de début", date_min)
+        return identifiants_tournoi
+
+    def recuperer_id_tournoi(self):
+        try:
+            id = int(input("Entrer l'id du tournoi (entier strictement supérieur à 0) : "))
+            assert id > 0
+        except ValueError:
+            return self.recuperer_id_tournoi()
+        except AssertionError:
+            return self.recuperer_id_tournoi()
+        else:
+            return id
+
+
 
 class MatchForm:
 

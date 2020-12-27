@@ -3,6 +3,7 @@
 from tinydb import TinyDB, Query
 import app.models.joueur as jx
 from app.models.exception import JoueurDAOException
+from app.utils import util
 
 class JoueurDAO:
 
@@ -17,8 +18,7 @@ class JoueurDAO:
             raise JoueurDAOException(f"Le joueur existe déjà dans la base de données : {joueur}")
         else:
             joueur.id = JoueurDAO._table_joueurs._get_next_id()
-            data_storage = dict((attr[1:], value) for (attr, value) in joueur.__dict__.items())
-            JoueurDAO._table_joueurs.insert(data_storage)
+            JoueurDAO._table_joueurs.insert(util.document(joueur))
 
     def read_all(self):
         return [jx.Joueur(**item) for item in JoueurDAO._table_joueurs.all()]
@@ -42,9 +42,7 @@ class JoueurDAO:
             self.create(joueur)
         else:
             requete = Query()
-            data_storage = dict((attr[1:], value) for (attr, value) in joueur.__dict__.items())
-            print("joueurDAO")
-            JoueurDAO._table_joueurs.update(data_storage, (requete.nom == joueur.nom)
+            JoueurDAO._table_joueurs.update(util.document(joueur), (requete.nom == joueur.nom)
                                             & (requete.prenom == joueur.prenom)
                                             & (requete.date_de_naissance == joueur.date_de_naissance))
 

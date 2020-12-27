@@ -193,21 +193,40 @@ class Tournoi:
             if joueur in self._liste_de_participants:
                 raise TournoiException(f"joueur {joueur} déjà inscrit au tournoi")
             else:
+                joueur.rang = 0
                 joueur.nombre_de_points = 0
                 self._liste_de_participants.append(joueur)
                 self._nombre_de_joueurs_inscrits += 1
         else:
             raise TournoiException(f"ajouter_participant attend une instance de joueur en paramètre: {joueur}")
 
+    def initialiser_rang_participants(self):
+        self._liste_de_participants.sort(key=attrgetter('classement'))
+        rang = 1
+        for joueur in self._liste_de_participants:
+            joueur.rang = rang
+            rang += 1
+
+    def finaliser_rang_participants(self):
+        if self._statut == "en cours":
+            raise TournoiException(f"{self._nom} en cours : impossible de finaliser le classement")
+        else:
+            self.trier_liste_de_participants()
+            rang = 1
+            for joueur in self._liste_de_participants:
+                joueur.rang = rang
+                rang += 1
+
+
     def trier_liste_de_participants(self):
         """
         Méthode qui va trier la liste des participants au tournoi sur le nombre de points décroissant
-        En cas d'égalité sur le nombre de points, on trie sur le classement dans l'ordre ascendant
+        En cas d'égalité sur le nombre de points, on trie sur le rang dans l'ordre ascendant
         """
-        # tri par classement croissant
-        liste_triee_par_classement = sorted(self._liste_de_participants, key=attrgetter('classement'))
+        # tri par rang croissant
+        liste_triee_par_rang = sorted(self._liste_de_participants, key=attrgetter('rang'))
         # tri par nombre de points décroissant
-        self._liste_de_participants = sorted(liste_triee_par_classement, key=attrgetter('nombre_de_points'), reverse=True)
+        self._liste_de_participants = sorted(liste_triee_par_rang, key=attrgetter('nombre_de_points'), reverse=True)
 
     # mettre liste_matchs_deja_jouers à mettre en attribut de tournoi
     # a incrémenter après chaque génération de paires
@@ -276,12 +295,22 @@ class Tournoi:
             cle = f"{match.paire_de_joueurs[0].id} {match.paire_de_joueurs[1].id}"
             self._matchs_deja_joues[cle] = 1
 
+    def cloturer(self):
+        self._date_de_fin = util.encode_date(datetime.now())
+        self._statut = "terminé"
+        self.finaliser_rang_participants()
+
+
     def create(self):
         TournoiDAO().create(self)
 
     @classmethod
     def read_all(cls):
         return TournoiDAO().read_all()
+
+    @classmethod
+    def read(cls, id):
+        return TournoiDAO().read(id)
 
     @classmethod
     def read_by_index(cls, nom, lieu, date_de_debut):

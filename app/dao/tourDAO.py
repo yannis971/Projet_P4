@@ -4,7 +4,7 @@ from tinydb import TinyDB, Query
 import app.models.tour as tx
 from app.dao.matchDAO import MatchDAO
 from app.models.exception import TourDAOException
-
+from app.utils import util
 
 class TourDAO:
     _db = TinyDB('db.json', sort_keys=True, indent=4)
@@ -18,10 +18,8 @@ class TourDAO:
             raise TourDAOException(f"Le tour existe déjà dans la base de données : {tour}")
         else:
             tour.id = TourDAO._liens_tour_tournoi._get_next_id()
-            data_storage = dict(
-                (attr[1:], value) for (attr, value) in tour.__dict__.items() if not isinstance(value, list))
-            data_storage['id_tournoi'] = id_tournoi
-            TourDAO._liens_tour_tournoi.insert(data_storage)
+            tour._id_tournoi = id_tournoi
+            TourDAO._liens_tour_tournoi.insert(util.document(tour))
             for match in tour.liste_de_matchs:
                 MatchDAO().create(tour.id, match)
 
@@ -53,10 +51,8 @@ class TourDAO:
             self.create(id_tournoi, tour)
         else:
             requete = Query()
-            data_storage = dict(
-                (attr[1:], value) for (attr, value) in tour.__dict__.items() if not isinstance(value, list))
-            data_storage['id_tournoi'] = id_tournoi
-            TourDAO._liens_tour_tournoi.update(data_storage, (requete.id_tournoi == id_tournoi)
+            tour._id_tournoi = id_tournoi
+            TourDAO._liens_tour_tournoi.update(util.document(tour), (requete.id_tournoi == id_tournoi)
                                                & (requete.nom == tour.nom))
             for match in tour.liste_de_matchs:
                 MatchDAO().update(tour.id, match)

@@ -5,6 +5,7 @@ import app.models.tournoi as tx
 from app.dao.tourDAO import TourDAO
 from app.dao.joueurDAO import JoueurDAO
 from app.models.exception import TournoiDAOException
+from app.utils import util
 
 class TournoiDAO:
 
@@ -20,25 +21,13 @@ class TournoiDAO:
         if self.tournoi_exists(tournoi):
             raise TournoiDAOException(f"Le tournoi existe déjà dans la base de données : {tournoi}")
         else:
-            print("_next_id :", TournoiDAO._table_tournois._next_id)
             tournoi.id = TournoiDAO._table_tournois._get_next_id()
-            print("_next_id :", TournoiDAO._table_tournois._next_id, "tournoi.id :", tournoi.id )
-            data_storage = dict((attr[1:], value) for (attr, value) in tournoi.__dict__.items()
-                                #if not isinstance(value, list) and not isinstance(value, dict))
-                                if not isinstance(value, list))
-            TournoiDAO._table_tournois.insert(data_storage)
-            #matchs_deja_joues
-            #data_storage = tournoi.matchs_deja_joues
-            #data_storage['id_tournoi'] = tournoi.id
-            #TournoiDAO._matchs_deja_joues.insert(data_storage)
-            #liens_participants_tournoi
+            TournoiDAO._table_tournois.insert(util.document(tournoi))
+            #création des liens_participant_tournoi
             for joueur in tournoi.liste_de_participants:
-                document = dict()
-                document['id'] = joueur.id
-                document['id_tournoi'] = tournoi.id
-                document['nombre_de_points'] = joueur.nombre_de_points
-                TournoiDAO._liens_participant_tournoi.insert(document)
-            #liste des tours
+                data = self.data_participant_tournoi(tournoi.id, joueur)
+                TournoiDAO._liens_participant_tournoi.insert(util.document(data))
+            #création des tours
             for tour in tournoi.liste_de_tours:
                 TourDAO().create(tournoi.id, tour)
 
@@ -73,26 +62,14 @@ class TournoiDAO:
             self.create(tournoi)
         else:
             requete = Query()
-            data_storage = dict((attr[1:], value) for (attr, value) in tournoi.__dict__.items()
-                                #if not isinstance(value, list) and not isinstance(value, dict))
-                                if not isinstance(value, list))
-            print("data_storage", data_storage)
-            TournoiDAO._table_tournois.update(data_storage, (requete.nom == tournoi.nom)
+            TournoiDAO._table_tournois.update(util.document(tournoi), (requete.nom == tournoi.nom)
                                               & (requete.lieu == tournoi.lieu)
                                               & (requete.date_de_debut == tournoi.date_de_debut))
-            #matchs_deja_joues
-            #matchs_deja_joues = Query()
-            #data_storage = tournoi.matchs_deja_joues
-            #data_storage['id_tournoi'] = tournoi.id
-            #TournoiDAO._matchs_deja_joues.update(data_storage,(matchs_deja_joues.id_tournoi == tournoi.id))
             #liens_participants_tournoi
             for joueur in tournoi.liste_de_participants:
                 requete = Query()
-                document = dict()
-                document['id'] = joueur.id
-                document['id_tournoi'] = tournoi.id
-                document['nombre_de_points'] = joueur.nombre_de_points
-                TournoiDAO._liens_participant_tournoi.update(document, (requete.id == joueur.id)
+                data = self.data_participant_tournoi(tournoi.id, joueur)
+                TournoiDAO._liens_participant_tournoi.update(util.document(data), (requete.id == joueur.id)
                                                              & (requete.id_tournoi == tournoi.id))
             #liste des tours
             for tour in tournoi.liste_de_tours:
@@ -117,7 +94,6 @@ class TournoiDAO:
         liste_de_documents = table.search(participant.id_tournoi == id_tournoi)
         liste_de_participants = list()
         for document in liste_de_documents:
-            print("document['id'] = ", document['id'])
             joueur = JoueurDAO().read(document['id'])
             joueur.nombre_de_points = document['nombre_de_points']
             liste_de_participants.append(joueur)
@@ -129,3 +105,11 @@ class TournoiDAO:
         tournoi._liste_de_tours = TourDAO().read_by_id_tournoi(tournoi.id)
         tournoi._liste_de_participants = self.recuperer_participants_tournoi(tournoi.id)
         return tournoi
+
+    def data_participant_tournoi(self, id_tournoi, joueur):
+        data = dict()
+        data['id'] = joueur.id
+        data['id_tournoi'] = id_tournoi
+        data['rang'] = joueur.rang
+        data['nombre_de_points'] = joueur.nombre_de_points
+        return data
