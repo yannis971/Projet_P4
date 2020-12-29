@@ -1,14 +1,22 @@
 # -*-coding:utf-8 -*
+"""
+Module joueur décrivant la classe Joueur
+"""
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
+
+from app.dao.joueur_dao import JoueurDAO
 from app.models.exception import JoueurException
 from app.utils import util
-from app.dao.joueurDAO import JoueurDAO
 
 
 class Joueur:
-
-    __list_attrs = ['_nom', '_prenom', '_date_de_naissance', '_sexe', '_classement']
+    """
+    Class describing a chess player
+    """
+    __list_attrs = ['_nom', '_prenom', '_date_de_naissance',
+                    '_sexe', '_classement']
 
     def __init__(self, **joueur_properties):
         for (attr_name, attr_value) in joueur_properties.items():
@@ -16,17 +24,23 @@ class Joueur:
         self.check_attrs()
 
     def __str__(self):
-        description_joueur = f"Joueur : {self._nom} {self._prenom} {self._date_de_naissance} {self._sexe} {self._classement}"
+        chaine = f"Joueur : {self._nom} {self._prenom} "
+        chaine += f"{self._date_de_naissance} {self._sexe} {self._classement}"
         if hasattr(self, 'rang'):
-            description_joueur += f" {self.rang}"
+            chaine += f" {self.rang}"
         if hasattr(self, 'nombre_de_points'):
-            description_joueur += f" {self.nombre_de_points}"
-        return description_joueur
+            chaine += f" {self.nombre_de_points}"
+        return chaine
 
     def check_attrs(self):
+        """
+        Methode vérifiant que l'instance de Joueur contient tous les attributs
+        définissant un un objet de type Joueur
+        """
         for attr in Joueur.__list_attrs:
             if not hasattr(self, attr):
-                raise JoueurException(f"objet de type Joueur sans propriété : {attr[1:]}")
+                message = f"objet de type Joueur sans propriété : {attr[1:]}"
+                raise JoueurException(message)
 
     @property
     def id(self):
@@ -99,19 +113,37 @@ class Joueur:
             raise JoueurException(f"classement du joueur invalide : {value}")
 
     def create(self):
+        """
+        Crée le joueur dans la base de données
+        """
         JoueurDAO().create(self)
 
     @classmethod
     def read_all(cls):
+        """
+        Renvoie la liste des joueurs stockés dans la base de données
+        """
         return JoueurDAO().read_all()
 
     @classmethod
-    def read(cls, id):
-        return JoueurDAO().read(id)
+    def read(cls, id_joueur):
+        """
+        Recherche le joueur dans la base de données à partir de son id
+        Et renvoie l'instance de joueur correspondante
+        """
+        return JoueurDAO().read(id_joueur)
 
     @classmethod
     def read_by_index(cls, nom, prenom, date_de_naissance):
+        """
+        Recherche le joueur dans la base de données à partir de son index
+        nom + prenom + date_de_naissance
+        Et renvoie l'instance de tournoi correspondante
+        """
         return JoueurDAO().read_by_index(nom, prenom, date_de_naissance)
 
     def update(self):
+        """
+        Met à jour le joueur dans la base de données
+        """
         JoueurDAO().update(self)

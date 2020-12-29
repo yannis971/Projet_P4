@@ -4,9 +4,9 @@ import argparse
 import os
 import sys
 
-from app.controllers.controllerJoueur import ControllerJoueur
-from app.controllers.controllerTournoi import ControllerTournoi
-from app.controllers.controllerRapport import ControllerRapport
+from app.controllers.controller_joueur import ControllerJoueur
+from app.controllers.controller_tournoi import ControllerTournoi
+from app.controllers.controller_rapport import ControllerRapport
 
 def configure():
     current_path = os.path.dirname(__file__)
