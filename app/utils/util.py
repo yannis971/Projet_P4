@@ -3,7 +3,7 @@ import os
 import platform
 import re
 from datetime import datetime
-
+from tinydb.table import Document
 
 pattern_date = "[0-9]{4}-[0-9]{2}-[0-9]{2}"
 format_date = '%Y-%m-%d'
@@ -11,24 +11,24 @@ format_date = '%Y-%m-%d'
 pattern_date_heure = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
 format_date_heure = '%Y-%m-%dT%H:%M:%S'
 
+
 def clear_command(name):
     print("platform.system", name)
     return 'cls' if name == 'Windows' else 'clear'
 
+
 def clear_console():
     os.system(clear_command(platform.system()))
+
 
 def controle_date(chaine, pattern, format):
     if re.match(pattern, chaine):
         try:
-            date = datetime.strptime(chaine, format)
-            del (date)
+            datetime.strptime(chaine, format)
             result = True
-        except ValueError as ex:
-            print(f"la chaine de caractères {chaine} n'est pas au format {format}")
+        except ValueError:
             result = False
     else:
-        print(f"la chaine de caractères {chaine} ne correspond pas au pattern {pattern}")
         result = False
     return result
 
@@ -64,5 +64,24 @@ def encode_date_heure(date_time):
 
 
 def is_chaine_alpha_valide(chaine):
-    pattern_nom_prenom = "^[A-Z][A-Za-z\é\è\ê\ë\ç\ï\ô\-]+$"
-    return (isinstance(chaine, str) and len(chaine) > 1 and re.match(pattern_nom_prenom, chaine))
+    pattern_nom_prenom = r"^[A-Z][A-Za-z\é\è\ê\ë\ç\ï\ô\-]+$"
+    controle_01 = isinstance(chaine, str)
+    controle_02 = len(chaine) > 1
+    controle_03 = re.match(pattern_nom_prenom, chaine)
+    return controle_01 and controle_02 and controle_03
+
+
+def left_justified(liste_de_chaines):
+    length_max = max(len(chaine) for chaine in liste_de_chaines)
+    for chaine in liste_de_chaines:
+        chaine = chaine.ljust(length_max, " ")
+        yield chaine
+
+
+def document(object):
+    if isinstance(object, dict):
+        return Document(object, object['id'])
+    else:
+        dico = dict((attr[1:], value) for (attr, value)
+                    in object.__dict__.items() if not isinstance(value, list))
+        return Document(dico, object.id)

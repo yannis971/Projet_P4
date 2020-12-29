@@ -1,29 +1,34 @@
 # -*-coding:utf-8 -*
-
+"""
+Module menu
+"""
 from app.utils import util
 
 
 class Menu:
-
-
-    def __init__(self, liste_de_choix):
+    """
+    Classe Menu chargé d'afficher un menu :
+        Titre
+        Liste de choix
+    """
+    def __init__(self, titre, liste_de_choix):
         self._choix = ""
         self._liste_de_choix = liste_de_choix
+        self._indice_max = len(liste_de_choix) - 1
+        self._titre = titre
         util.clear_console()
 
     def get_choix(self):
+        print(f"\n{self._titre}\n")
         for (i, libelle_choix) in enumerate(self._liste_de_choix):
             print(f"{i} - {libelle_choix}")
         try:
-            self._choix = int(input(f"entrer votre choix de 0 à {len(self._liste_de_choix)-1}: "))
-            assert self._choix >= 0 and self._choix < len(self._liste_de_choix)
+            message = f"\nentrer votre choix de 0 à {self._indice_max} : "
+            self._choix = int(input(message).strip())
+            assert self._choix >= 0 and self._choix <= self._indice_max
         except ValueError:
             return self.get_choix()
         except AssertionError:
             return self.get_choix()
         else:
             return self._choix
-
-if __name__ == "__main__":
-    m = Menu()
-    print("mon choix est", m.get_choix())

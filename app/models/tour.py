@@ -1,5 +1,7 @@
 # -*-coding:utf-8 -*
-
+"""
+Module tour décrivant la classe Tour
+"""
 from datetime import datetime
 from app.models.exception import TourException
 from app.models.match import Match
@@ -7,23 +9,32 @@ from app.utils import util
 
 
 class Tour:
-
-    __list_attrs = ['_nom', '_date_heure_debut', '_date_heure_fin' ]
+    """
+    Classe décrivant un tour dans un tournoi d'échecs
+    """
+    __list_attrs = ['_nom', '_date_heure_debut', '_date_heure_fin']
 
     def __init__(self, **joueur_properties):
         for (attr_name, attr_value) in joueur_properties.items():
             setattr(self, attr_name, attr_value)
         self.check_attrs()
         self._liste_de_matchs = list()
-        self._statut = "en cours"
+        if not hasattr(self, '_statut'):
+            self._statut = "en cours"
 
     def __str__(self):
-        return (f"Tour: {self._nom} {self._date_heure_debut} {self._date_heure_fin} {self.statut}")
+        return f"Tour: {self._nom} {self._date_heure_debut} \
+                {self._date_heure_fin} {self.statut}"
 
     def check_attrs(self):
+        """
+        Methode vérifiant que l'instance de Tour contient tous les attributs
+        définissant un un objet de type Tour
+        """
         for attr in Tour.__list_attrs:
             if not hasattr(self, attr):
-                raise TourException(f"objet de type Tour sans propriété : {attr[1:]}")
+                message = f"objet de type Tour sans propriété : {attr[1:]}"
+                raise TourException(message)
 
     @property
     def id(self):
@@ -65,21 +76,15 @@ class Tour:
     @date_heure_fin.setter
     def date_heure_fin(self, value):
         if isinstance(value, str) and util.is_date_heure_valid(value):
-            if util.decode_date_heure(value) >= util.decode_date_heure(self._date_heure_debut):
+            date_heure_debut = util.decode_date_heure(self._date_heure_debut)
+            if util.decode_date_heure(value) >= date_heure_debut:
                 self._date_heure_fin = value
             else:
-                raise TourException(f"date_heure_fin ({value}) < date_heure_debut ({self._date_heure_debut}) ")
+                message = f"date_heure_fin ({value}) < date_heure_debut "
+                message += f"{self._date_heure_debut}"
+                raise TourException(message)
         else:
             raise TourException(f"date_heure_fin invalide : {value}")
-
-    def ajouter_match(self, value):
-        if isinstance(value, Match):
-            if value not in self._liste_de_matchs:
-                self._liste_de_matchs.append(value)
-            else:
-                raise TourException(f"instance de match {value} en double dans un tour {self}")
-        else:
-            raise TourException(f"la méthode ajouter_match attend un objet de type Match en paramètre, or on a {value}")
 
     @property
     def liste_de_matchs(self):
@@ -102,6 +107,24 @@ class Tour:
         else:
             raise TourException(f"statut du tour invalide : {value}")
 
+    def ajouter_match(self, value):
+        """
+        Méthode permettant d'ajouter un match à la liste des matchs du tour
+        """
+        if isinstance(value, Match):
+            if value not in self._liste_de_matchs:
+                self._liste_de_matchs.append(value)
+            else:
+                message = f"instance de match {value} en double "
+                message += f"dans un tour {self}"
+                raise TourException(message)
+        else:
+            message = f"l'objet ajouté n'est pas de type Match : {value}"
+            raise TourException(message)
+
     def cloturer(self):
+        """
+        Méthode permetant de cloturer un tour
+        """
         self._date_heure_fin = util.encode_date_heure(datetime.now())
         self._statut = "terminé"
