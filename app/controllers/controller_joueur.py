@@ -3,6 +3,7 @@
 Module controlleur_joueur définissant la classe ControllerJoueur
 """
 import sys
+from operator import attrgetter
 
 from app.views.menu import Menu
 from app.views.formulaire import JoueurForm
@@ -48,7 +49,9 @@ class ControllerJoueur:
         """
         Méthode permetannt d'afficher la liste des joueurs
         """
-        ListView("Liste de joueurs", Joueur.read_all()).display()
+        liste_de_joueurs = list(Joueur.read_all())
+        liste_de_joueurs.sort(key=attrgetter('id'))
+        ListView("Liste des joueurs", liste_de_joueurs).display()
 
     def recuperer_joueur(self):
         """

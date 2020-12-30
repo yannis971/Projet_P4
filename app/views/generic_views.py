@@ -35,8 +35,9 @@ class ListView:
     def display(self):
         print(self._title)
         print("\n")
-        print(self._data_frame)
+        if not self._data_frame.empty:
+            print(self._data_frame)
+        else:
+            for i, item in enumerate(self._liste_items):
+                print(f"{i} - {item}")
         print("\n")
-        for i, item in enumerate(self._liste_items):
-            print(f"{i + 1} -  {item}")
-

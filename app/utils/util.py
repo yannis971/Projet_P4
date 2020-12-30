@@ -106,6 +106,15 @@ def list_attr(attr, list_of_objects):
     """
     return [object.__getattribute__(attr) for object in list_of_objects]
 
+def list_valeurs(cle, list_of_objects):
+    """
+    renvoie la liste des valeurs d'une cle dans une liste d'objets
+    """
+    return [object[cle] for object in list_of_objects]
+
+def get_cle(attr):
+    return attr[1:] if attr[0] == '_' else attr
+
 
 def dico_data_frame(list_of_objects):
     """
@@ -114,10 +123,18 @@ def dico_data_frame(list_of_objects):
     """
     if list_of_objects:
         object = list_of_objects[0]
-        dico_data_frame = dict((attr[1:], list_attr(attr, list_of_objects))
+        if hasattr(object, '__dict__'):
+            dico_data_frame = dict((get_cle(attr),
+                                list_attr(attr, list_of_objects))
                           for (attr, value) in object.__dict__.items()
-                          if not isinstance(value, list) and
+                          if not isinstance(value, dict) and
+                             not isinstance(value, list) and
                              not isinstance(value, Generator))
+        elif isinstance(object, dict):
+            dico_data_frame = dict((cle, list_valeurs(cle, list_of_objects))
+                                   for cle in object.keys())
+        else:
+            dico_data_frame = dict()
     else:
         dico_data_frame = dict()
     return dico_data_frame

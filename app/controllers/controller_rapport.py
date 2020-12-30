@@ -5,6 +5,7 @@ Module controlleur_rapport définissant la classe ControllerRapport
 
 import sys
 from operator import attrgetter
+from operator import itemgetter
 
 from app.views.menu import Menu
 from app.views.generic_views import ListView
@@ -78,7 +79,9 @@ class ControllerRapport:
         """
         Méthode permettant de lister tous les tournois
         """
-        ListView("Liste de tous les tournois", Tournoi.read_all()).display()
+        ListView("Liste de tous les tournois", list(Tournoi.read_all(
+
+        ))).display()
 
     def lister_tours_tournoi_handler(self):
         """
@@ -96,8 +99,17 @@ class ControllerRapport:
         tournoi = self.recuperer_tournoi()
         liste_des_tours_du_tournoi = tournoi.liste_de_tours
         for tour in liste_des_tours_du_tournoi:
-            ListView(f"Liste des matchs du tour {tour.nom}",
-                     tour.liste_de_matchs).display()
+            liste_de_matchs = list()
+            for match in tour.liste_de_matchs:
+                data = dict()
+                data['id'] = match.id
+                data['match'] = match.paire_de_joueurs[0].nom + ' - ' + \
+                                match.paire_de_joueurs[1].nom
+                data['score'] = f"{match.score[0]} - {match.score[1]}"
+                liste_de_matchs.append(data)
+            liste_de_matchs.sort(key=itemgetter('id'))
+            titre = f"Liste des matchs du tour : {tour.nom}"
+            ListView(titre, liste_de_matchs).display()
 
     def quitter_handler(self):
         """

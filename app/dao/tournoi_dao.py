@@ -33,6 +33,8 @@ class TournoiDAO:
             TournoiDAO._table_tournois.insert(util.document(tournoi))
             for joueur in tournoi.liste_de_participants:
                 data = self.data_participant_tournoi(tournoi.id, joueur)
+                data['id'] = \
+                    TournoiDAO._liens_participant_tournoi._get_next_id()
                 document = util.document(data)
                 TournoiDAO._liens_participant_tournoi.insert(document)
             for tour in tournoi.liste_de_tours:
@@ -86,9 +88,9 @@ class TournoiDAO:
             for joueur in tournoi.liste_de_participants:
                 requete = Query()
                 data = self.data_participant_tournoi(tournoi.id, joueur)
-                document = util.document(data)
-                TournoiDAO._liens_participant_tournoi.update(
-                    document, (requete.id == joueur.id)
+                #document = util.document(data)
+                TournoiDAO._liens_participant_tournoi.upsert(
+                    data, (requete.id_joueur == joueur.id)
                     & (requete.id_tournoi == tournoi.id))
             for tour in tournoi.liste_de_tours:
                 TourDAO().update(tournoi.id, tour)
@@ -118,7 +120,7 @@ class TournoiDAO:
         table = TournoiDAO._liens_participant_tournoi
         liste_de_documents = table.search(participant.id_tournoi == id_tournoi)
         for document in liste_de_documents:
-            joueur = JoueurDAO().read(document['id'])
+            joueur = JoueurDAO().read(document['id_joueur'])
             joueur.nombre_de_points = document['nombre_de_points']
             joueur.rang = document['rang']
             yield joueur
@@ -140,7 +142,7 @@ class TournoiDAO:
         "liens_participant_tournoi"
         """
         data = dict()
-        data['id'] = joueur.id
+        data['id_joueur'] = joueur.id
         data['id_tournoi'] = id_tournoi
         data['rang'] = joueur.rang
         data['nombre_de_points'] = joueur.nombre_de_points

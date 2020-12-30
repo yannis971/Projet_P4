@@ -107,11 +107,12 @@ class JoueurForm(BaseForm):
             return liste_indices
 
     def recuperer_methode_acces(self):
-        print("comment souhaitez vous rechercher le joueur ?")
+        print("\nComment souhaitez vous rechercher le joueur ?")
         print("0 - par son id ?")
         print("1 - par l'index : nom + prénom + date de naissance ?")
         try:
-            choix = input("votre choix : ").strip()
+            message = "\nentrer votre choix de 0 à 10 : "
+            choix = input(message).strip()
             assert isinstance(choix, str) and choix in ["0", "1"]
         except AssertionError:
             return self.recuperer_methode_acces()
@@ -194,11 +195,11 @@ class TournoiForm(BaseForm):
             return liste_controle_du_temps[choix]
 
     def recuperer_methode_acces(self):
-        print("comment souhaitez vous rechercher le tournoi ?")
+        print("\nComment souhaitez vous rechercher le tournoi ?")
         print("0 - par son id ? ")
         print("1 - par l'index : nom + lieu + date de début ? ")
         try:
-            choix = input("votre choix : ").strip()
+            choix = input("\nentrer votre choix de 0 à 1: ").strip()
             assert isinstance(choix, str) and choix in ["0", "1"]
         except AssertionError:
             return self.recuperer_methode_acces()
@@ -255,7 +256,7 @@ class TourForm:
         message = "vous validez la mise à jour des scores et "
         message += "terminer ce tour O(oui) ou N(non) ? : "
         try:
-            validation = input().strip().upper()
+            validation = input(message).strip().upper()
             assert isinstance(validation, str) and validation in ['O', 'N']
         except AssertionError:
             print("AssertionError", validation, type(validation),
