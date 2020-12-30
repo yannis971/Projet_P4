@@ -25,12 +25,13 @@ class Tournoi:
             setattr(self, attr_name, attr_value)
         self.check_attrs()
         self._liste_de_tours = list()
-        self._nombre_de_joueurs_inscrits = 0
         self._liste_de_participants = list()
         if not hasattr(self, '_statut'):
             self._statut = "en cours"
         if not hasattr(self, '_matchs_deja_joues'):
             self._matchs_deja_joues = dict()
+        if not hasattr(self, '_nombre_de_joueurs_inscrits'):
+            self._nombre_de_joueurs_inscrits = 0
 
     def __str__(self):
         return f"Tournoi : {self._nom} {self._lieu} {self._date_de_debut} " \
