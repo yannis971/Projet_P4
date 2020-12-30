@@ -4,7 +4,6 @@ Module tournoi décrivant la classe Tournoi
 """
 from datetime import datetime
 from operator import attrgetter
-from typing import Generator
 
 from app.dao.tournoi_dao import TournoiDAO
 from app.models.exception import TournoiException
@@ -366,9 +365,7 @@ class Tournoi:
         Recherche le tournoi dans la base de données à partir de son id
         Et renvoie l'instance de tournoi correspondante
         """
-        tournoi = TournoiDAO().read(id_tournoi)
-        tournoi.gen_to_list()
-        return tournoi
+        return util.gen_to_list(TournoiDAO().read(id_tournoi))
 
     @classmethod
     def read_by_index(cls, nom, lieu, date_de_debut):
@@ -378,8 +375,7 @@ class Tournoi:
         Et renvoie l'instance de tournoi correspondante
         """
         tournoi = TournoiDAO().read_by_index(nom, lieu, date_de_debut)
-        tournoi.gen_to_list()
-        return tournoi
+        return util.gen_to_list(tournoi)
 
     def update(self):
         """
@@ -387,13 +383,4 @@ class Tournoi:
         """
         TournoiDAO().update(self)
 
-    def gen_to_list(self):
-        """
-        Transforme les attributs de type 'generator' en 'list'
-        Afin que l'utilisateur de l'instance du tournoi puisse utiliser
-        les méthodes de listes sur les attributs censés être des listes
-        """
-        if isinstance(self._liste_de_participants, Generator):
-            self._liste_de_participants = list(self._liste_de_participants)
-        if isinstance(self._liste_de_tours, Generator):
-            self._liste_de_tours = list(self._liste_de_tours)
+

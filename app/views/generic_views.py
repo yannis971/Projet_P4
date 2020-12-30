@@ -2,6 +2,7 @@
 """
 Module generic_views
 """
+import pandas as pd
 from app.utils import util
 
 
@@ -28,9 +29,14 @@ class ListView:
     def __init__(self, title, liste_items):
         self._title = title
         self._liste_items = liste_items
+        self._data_frame = pd.DataFrame(util.dico_data_frame(liste_items))
         print("\n")
 
     def display(self):
         print(self._title)
+        print("\n")
+        print(self._data_frame)
+        print("\n")
         for i, item in enumerate(self._liste_items):
             print(f"{i + 1} -  {item}")
+

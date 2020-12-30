@@ -4,6 +4,7 @@ import platform
 import re
 from datetime import datetime
 from tinydb.table import Document
+from typing import Generator
 
 pattern_date = "[0-9]{4}-[0-9]{2}-[0-9]{2}"
 format_date = '%Y-%m-%d'
@@ -85,3 +86,38 @@ def document(object):
         dico = dict((attr[1:], value) for (attr, value)
                     in object.__dict__.items() if not isinstance(value, list))
         return Document(dico, object.id)
+
+
+def gen_to_list(object):
+    """
+    Transforme les attributs de type 'generator' en 'list'
+    Afin que l'utilisateur de l'instance object puisse utiliser
+    les méthodes de listes sur les attributs censés être des listes
+    """
+    for attr, value in object.__dict__.items():
+        if isinstance(value, Generator):
+            setattr(object, attr, list(value))
+    return object
+
+
+def list_attr(attr, list_of_objects):
+    """
+    renvoie la liste des valeurs d'un attribut dans une liste d'objets
+    """
+    return [object.__getattribute__(attr) for object in list_of_objects]
+
+
+def dico_data_frame(list_of_objects):
+    """
+    Transforme une liste d'objets en dictionnaire à transformer en objet
+    de type pandas.DataFrame
+    """
+    if list_of_objects:
+        object = list_of_objects[0]
+        dico_data_frame = dict((attr[1:], list_attr(attr, list_of_objects))
+                          for (attr, value) in object.__dict__.items()
+                          if not isinstance(value, list) and
+                             not isinstance(value, Generator))
+    else:
+        dico_data_frame = dict()
+    return dico_data_frame

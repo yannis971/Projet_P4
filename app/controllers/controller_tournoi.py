@@ -29,18 +29,34 @@ class ControllerTournoi:
         self._choix = self._menu.get_choix()
         self._liste_joueurs = Joueur.read_all()
         self._tournoi = None
+        self._jeton = None
+
+
+    def controles_avant_creer_tournoi(self):
+        if (isinstance(self._tournoi, Tournoi) and self._jeton is None) or \
+                self._jeton == "vérouillé":
+            self._jeton = "vérouillé"
+            message = "Enregistrer le tournoi en cours au préalable"
+            raise exception.TournoiException(message)
+        else:
+            self._jeton = None
 
     def creer_tournoi_handler(self):
         """
         Méthode permettant de créer un tournoi
         """
         try:
-            self._tournoi = Tournoi(**TournoiForm().creer_tournoi())
+            self.controles_avant_creer_tournoi()
         except exception.TournoiException as ex:
             print(ex)
-            return self.creer_tournoi_handler()
         else:
-            print(f"création tournoi ok - {self._tournoi}")
+            try:
+                self._tournoi = Tournoi(**TournoiForm().creer_tournoi())
+            except exception.TournoiException as ex:
+                print(ex)
+                return self.creer_tournoi_handler()
+            else:
+                print(f"création tournoi ok - {self._tournoi}")
 
     def controles_avant_ajout_joueurs(self):
         """
@@ -180,27 +196,35 @@ class ControllerTournoi:
             print("Vous devez d'abord créer ou charger un tournoi")
         else:
             self._tournoi.update()
+            if self._jeton == "vérouillé":
+                self._jeton = "libre"
 
     def charger_tournoi_handler(self):
         """
         Méthode de récupérer les données d'un tournoi depuis sa dernière
         sauvegarde en base à partir de son id ou
         """
-        methode_acces = TournoiForm().recuperer_methode_acces()
         try:
-            if methode_acces == "id":
-                tournoi = Tournoi.read(TournoiForm().recuperer_id_tournoi())
-            else:
-                index = TournoiForm().recuperer_identifiants_tournoi()
-                tournoi = Tournoi.read_by_index(**index)
+            self.controles_avant_creer_tournoi()
         except exception.TournoiException as ex:
             print(ex)
-            return self.charger_tournoi_handler()
-        except exception.TournoiDAOException as ex:
-            print(ex)
-            return self.charger_tournoi_handler()
         else:
-            self._tournoi = tournoi
+            try:
+                methode_acces = TournoiForm().recuperer_methode_acces()
+                if methode_acces == "id":
+                    id_tournoi = TournoiForm().recuperer_id_tournoi()
+                    tournoi = Tournoi.read(id_tournoi)
+                else:
+                    index = TournoiForm().recuperer_identifiants_tournoi()
+                    tournoi = Tournoi.read_by_index(**index)
+            except exception.TournoiException as ex:
+                print(ex)
+                return self.charger_tournoi_handler()
+            except exception.TournoiDAOException as ex:
+                print(ex)
+                return self.charger_tournoi_handler()
+            else:
+                self._tournoi = tournoi
 
     def quitter_handler(self):
         """
