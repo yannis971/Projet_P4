@@ -32,6 +32,62 @@
             "score_joueur_1": 1.0,
             "score_joueur_2": 0.0
         },
+        "13": {
+            "id": 13,
+            "id_joueur_1": 1,
+            "id_joueur_2": 4,
+            "id_tour": 4,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "14": {
+            "id": 14,
+            "id_joueur_1": 3,
+            "id_joueur_2": 5,
+            "id_tour": 4,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "15": {
+            "id": 15,
+            "id_joueur_1": 6,
+            "id_joueur_2": 7,
+            "id_tour": 4,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "16": {
+            "id": 16,
+            "id_joueur_1": 8,
+            "id_joueur_2": 2,
+            "id_tour": 4,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "17": {
+            "id": 17,
+            "id_joueur_1": 1,
+            "id_joueur_2": 8,
+            "id_tour": 5,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "18": {
+            "id": 18,
+            "id_joueur_1": 4,
+            "id_joueur_2": 9,
+            "id_tour": 5,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "19": {
+            "id": 19,
+            "id_joueur_1": 5,
+            "id_joueur_2": 10,
+            "id_tour": 5,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
         "2": {
             "id": 2,
             "id_joueur_1": 2,
@@ -40,11 +96,171 @@
             "score_joueur_1": 0.0,
             "score_joueur_2": 1.0
         },
+        "20": {
+            "id": 20,
+            "id_joueur_1": 6,
+            "id_joueur_2": 11,
+            "id_tour": 5,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "21": {
+            "id": 21,
+            "id_joueur_1": 1,
+            "id_joueur_2": 10,
+            "id_tour": 6,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "22": {
+            "id": 22,
+            "id_joueur_1": 4,
+            "id_joueur_2": 6,
+            "id_tour": 6,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "23": {
+            "id": 23,
+            "id_joueur_1": 9,
+            "id_joueur_2": 11,
+            "id_tour": 6,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "24": {
+            "id": 24,
+            "id_joueur_1": 5,
+            "id_joueur_2": 8,
+            "id_tour": 6,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "25": {
+            "id": 25,
+            "id_joueur_1": 1,
+            "id_joueur_2": 4,
+            "id_tour": 7,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "26": {
+            "id": 26,
+            "id_joueur_1": 10,
+            "id_joueur_2": 9,
+            "id_tour": 7,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "27": {
+            "id": 27,
+            "id_joueur_1": 5,
+            "id_joueur_2": 11,
+            "id_tour": 7,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "28": {
+            "id": 28,
+            "id_joueur_1": 6,
+            "id_joueur_2": 8,
+            "id_tour": 7,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "29": {
+            "id": 29,
+            "id_joueur_1": 1,
+            "id_joueur_2": 11,
+            "id_tour": 8,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
         "3": {
             "id": 3,
             "id_joueur_1": 3,
             "id_joueur_2": 7,
             "id_tour": 1,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "30": {
+            "id": 30,
+            "id_joueur_1": 10,
+            "id_joueur_2": 4,
+            "id_tour": 8,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "31": {
+            "id": 31,
+            "id_joueur_1": 6,
+            "id_joueur_2": 5,
+            "id_tour": 8,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "32": {
+            "id": 32,
+            "id_joueur_1": 8,
+            "id_joueur_2": 9,
+            "id_tour": 8,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "33": {
+            "id": 33,
+            "id_joueur_1": 5,
+            "id_joueur_2": 9,
+            "id_tour": 9,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "34": {
+            "id": 34,
+            "id_joueur_1": 6,
+            "id_joueur_2": 10,
+            "id_tour": 9,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "35": {
+            "id": 35,
+            "id_joueur_1": 7,
+            "id_joueur_2": 11,
+            "id_tour": 9,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "36": {
+            "id": 36,
+            "id_joueur_1": 8,
+            "id_joueur_2": 12,
+            "id_tour": 9,
+            "score_joueur_1": 0.0,
+            "score_joueur_2": 1.0
+        },
+        "37": {
+            "id": 37,
+            "id_joueur_1": 9,
+            "id_joueur_2": 10,
+            "id_tour": 10,
+            "score_joueur_1": 1.0,
+            "score_joueur_2": 0.0
+        },
+        "38": {
+            "id": 38,
+            "id_joueur_1": 11,
+            "id_joueur_2": 12,
+            "id_tour": 10,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
+        },
+        "39": {
+            "id": 39,
+            "id_joueur_1": 5,
+            "id_joueur_2": 6,
+            "id_tour": 10,
             "score_joueur_1": 1.0,
             "score_joueur_2": 0.0
         },
@@ -55,6 +271,14 @@
             "id_tour": 1,
             "score_joueur_1": 0.0,
             "score_joueur_2": 1.0
+        },
+        "40": {
+            "id": 40,
+            "id_joueur_1": 7,
+            "id_joueur_2": 8,
+            "id_tour": 10,
+            "score_joueur_1": 0.5,
+            "score_joueur_2": 0.5
         },
         "5": {
             "id": 5,
@@ -101,50 +325,162 @@
         "1": {
             "id_joueur": 1,
             "id_tournoi": 1,
-            "nombre_de_points": 2.0,
+            "nombre_de_points": 3.0,
             "rang": 1
+        },
+        "10": {
+            "id": 10,
+            "id_joueur": 9,
+            "id_tournoi": 2,
+            "nombre_de_points": 2.5,
+            "rang": 2
+        },
+        "11": {
+            "id": 11,
+            "id_joueur": 10,
+            "id_tournoi": 2,
+            "nombre_de_points": 2.5,
+            "rang": 3
+        },
+        "12": {
+            "id": 12,
+            "id_joueur": 4,
+            "id_tournoi": 2,
+            "nombre_de_points": 2.0,
+            "rang": 4
+        },
+        "13": {
+            "id": 13,
+            "id_joueur": 11,
+            "id_tournoi": 2,
+            "nombre_de_points": 2.0,
+            "rang": 5
+        },
+        "14": {
+            "id": 14,
+            "id_joueur": 5,
+            "id_tournoi": 2,
+            "nombre_de_points": 1.5,
+            "rang": 6
+        },
+        "15": {
+            "id": 15,
+            "id_joueur": 6,
+            "id_tournoi": 2,
+            "nombre_de_points": 1.0,
+            "rang": 7
+        },
+        "16": {
+            "id": 16,
+            "id_joueur": 8,
+            "id_tournoi": 2,
+            "nombre_de_points": 1.0,
+            "rang": 8
+        },
+        "17": {
+            "id": 17,
+            "id_joueur": 9,
+            "id_tournoi": 3,
+            "nombre_de_points": 2.0,
+            "rang": 5
+        },
+        "18": {
+            "id": 18,
+            "id_joueur": 10,
+            "id_tournoi": 3,
+            "nombre_de_points": 1.0,
+            "rang": 6
+        },
+        "19": {
+            "id": 19,
+            "id_joueur": 11,
+            "id_tournoi": 3,
+            "nombre_de_points": 1.5,
+            "rang": 7
         },
         "2": {
             "id_joueur": 3,
             "id_tournoi": 1,
             "nombre_de_points": 2.0,
+            "rang": 2
+        },
+        "20": {
+            "id": 20,
+            "id_joueur": 12,
+            "id_tournoi": 3,
+            "nombre_de_points": 1.5,
+            "rang": 8
+        },
+        "21": {
+            "id": 21,
+            "id_joueur": 5,
+            "id_tournoi": 3,
+            "nombre_de_points": 1.0,
+            "rang": 1
+        },
+        "22": {
+            "id": 22,
+            "id_joueur": 6,
+            "id_tournoi": 3,
+            "nombre_de_points": 0.0,
+            "rang": 2
+        },
+        "23": {
+            "id": 23,
+            "id_joueur": 7,
+            "id_tournoi": 3,
+            "nombre_de_points": 0.5,
             "rang": 3
+        },
+        "24": {
+            "id": 24,
+            "id_joueur": 8,
+            "id_tournoi": 3,
+            "nombre_de_points": 0.5,
+            "rang": 4
         },
         "3": {
             "id_joueur": 6,
             "id_tournoi": 1,
-            "nombre_de_points": 1.0,
-            "rang": 6
+            "nombre_de_points": 2.0,
+            "rang": 4
         },
         "4": {
             "id_joueur": 8,
             "id_tournoi": 1,
             "nombre_de_points": 1.0,
-            "rang": 8
+            "rang": 7
         },
         "5": {
             "id_joueur": 2,
             "id_tournoi": 1,
-            "nombre_de_points": 0.0,
-            "rang": 2
+            "nombre_de_points": 1.0,
+            "rang": 5
         },
         "6": {
             "id_joueur": 4,
             "id_tournoi": 1,
             "nombre_de_points": 1.0,
-            "rang": 4
+            "rang": 6
         },
         "7": {
             "id_joueur": 5,
             "id_tournoi": 1,
-            "nombre_de_points": 1.0,
-            "rang": 5
+            "nombre_de_points": 2.0,
+            "rang": 3
         },
         "8": {
             "id_joueur": 7,
             "id_tournoi": 1,
             "nombre_de_points": 0.0,
-            "rang": 7
+            "rang": 8
+        },
+        "9": {
+            "id": 9,
+            "id_joueur": 1,
+            "id_tournoi": 2,
+            "nombre_de_points": 3.5,
+            "rang": 1
         }
     },
     "liens_tour_tournoi": {
@@ -154,6 +490,14 @@
             "id": 1,
             "id_tournoi": 1,
             "nom": "Round 1",
+            "statut": "termin\u00e9"
+        },
+        "10": {
+            "date_heure_debut": "2021-01-01T17:45:27",
+            "date_heure_fin": "2021-01-01T17:46:07",
+            "id": 10,
+            "id_tournoi": 3,
+            "nom": "Round 2",
             "statut": "termin\u00e9"
         },
         "2": {
@@ -170,6 +514,54 @@
             "id": 3,
             "id_tournoi": 1,
             "nom": "Round 3",
+            "statut": "termin\u00e9"
+        },
+        "4": {
+            "date_heure_debut": "2020-12-31T13:29:46",
+            "date_heure_fin": "2020-12-31T13:31:54",
+            "id": 4,
+            "id_tournoi": 1,
+            "nom": "Round 4",
+            "statut": "termin\u00e9"
+        },
+        "5": {
+            "date_heure_debut": "2021-01-01T15:06:53",
+            "date_heure_fin": "2021-01-01T15:08:11",
+            "id": 5,
+            "id_tournoi": 2,
+            "nom": "Round 1",
+            "statut": "termin\u00e9"
+        },
+        "6": {
+            "date_heure_debut": "2021-01-01T15:08:15",
+            "date_heure_fin": "2021-01-01T15:11:21",
+            "id": 6,
+            "id_tournoi": 2,
+            "nom": "Round 2",
+            "statut": "termin\u00e9"
+        },
+        "7": {
+            "date_heure_debut": "2021-01-01T15:11:40",
+            "date_heure_fin": "2021-01-01T15:12:29",
+            "id": 7,
+            "id_tournoi": 2,
+            "nom": "Round 3",
+            "statut": "termin\u00e9"
+        },
+        "8": {
+            "date_heure_debut": "2021-01-01T15:13:02",
+            "date_heure_fin": "2021-01-01T15:14:01",
+            "id": 8,
+            "id_tournoi": 2,
+            "nom": "Round 4",
+            "statut": "termin\u00e9"
+        },
+        "9": {
+            "date_heure_debut": "2021-01-01T17:39:53",
+            "date_heure_fin": "2021-01-01T17:41:37",
+            "id": 9,
+            "id_tournoi": 3,
+            "nom": "Round 1",
             "statut": "termin\u00e9"
         }
     },
@@ -196,6 +588,14 @@
             "id": 11,
             "nom": "Leclerc",
             "prenom": "Charles",
+            "sexe": "M"
+        },
+        "12": {
+            "classement": 14,
+            "date_de_naissance": "1986-07-01",
+            "id": 12,
+            "nom": "Lupin",
+            "prenom": "Arsene",
             "sexe": "M"
         },
         "2": {
@@ -267,28 +667,84 @@
         "1": {
             "controle_du_temps": "bullet",
             "date_de_debut": "2020-12-30",
-            "date_de_fin": "2020-12-30",
+            "date_de_fin": "2020-12-31",
             "description": "tournoi de cergy (france)",
             "id": 1,
             "lieu": "cergy",
             "matchs_deja_joues": {
                 "1 3": 1,
+                "1 4": 1,
                 "1 5": 1,
                 "1 6": 1,
                 "2 4": 1,
                 "2 5": 1,
                 "2 6": 1,
+                "3 5": 1,
                 "3 7": 1,
                 "3 8": 1,
                 "4 7": 1,
                 "4 8": 1,
                 "5 7": 1,
-                "6 8": 1
+                "6 7": 1,
+                "6 8": 1,
+                "8 2": 1
             },
             "nom": "tournoi de cergy",
             "nombre_de_joueurs_inscrits": 8,
             "nombre_de_tours": 4,
             "statut": "termin\u00e9"
+        },
+        "2": {
+            "controle_du_temps": "coup rapide",
+            "date_de_debut": "2021-01-01",
+            "date_de_fin": "2021-01-01",
+            "description": "le tournoi des maitres",
+            "id": 2,
+            "lieu": "paris",
+            "matchs_deja_joues": {
+                "1 10": 1,
+                "1 11": 1,
+                "1 4": 1,
+                "1 8": 1,
+                "10 4": 1,
+                "10 9": 1,
+                "4 6": 1,
+                "4 9": 1,
+                "5 10": 1,
+                "5 11": 1,
+                "5 8": 1,
+                "6 11": 1,
+                "6 5": 1,
+                "6 8": 1,
+                "8 9": 1,
+                "9 11": 1
+            },
+            "nom": "the masters",
+            "nombre_de_joueurs_inscrits": 8,
+            "nombre_de_tours": 4,
+            "statut": "termin\u00e9"
+        },
+        "3": {
+            "controle_du_temps": "blitz",
+            "date_de_debut": "2021-01-01",
+            "date_de_fin": "2021-01-01",
+            "description": "tournoi de monaco",
+            "id": 3,
+            "lieu": "monaco",
+            "matchs_deja_joues": {
+                "11 12": 1,
+                "5 6": 1,
+                "5 9": 1,
+                "6 10": 1,
+                "7 11": 1,
+                "7 8": 1,
+                "8 12": 1,
+                "9 10": 1
+            },
+            "nom": "tournoi de monaco",
+            "nombre_de_joueurs_inscrits": 8,
+            "nombre_de_tours": 4,
+            "statut": "en cours"
         }
     }
 }

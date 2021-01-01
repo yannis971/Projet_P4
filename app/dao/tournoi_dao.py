@@ -88,7 +88,6 @@ class TournoiDAO:
             for joueur in tournoi.liste_de_participants:
                 requete = Query()
                 data = self.data_participant_tournoi(tournoi.id, joueur)
-                #document = util.document(data)
                 TournoiDAO._liens_participant_tournoi.upsert(
                     data, (requete.id_joueur == joueur.id)
                     & (requete.id_tournoi == tournoi.id))

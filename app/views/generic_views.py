@@ -26,13 +26,15 @@ class DetailView:
 
 class ListView:
 
-    def __init__(self, title, liste_items):
+    def __init__(self, title, entete, liste_items):
         self._title = title
+        self._entete = entete
         self._liste_items = liste_items
-        self._data_frame = pd.DataFrame(util.dico_data_frame(liste_items))
-        print("\n")
+        self._data_frame = pd.DataFrame(util.dico_data_frame(entete,
+                                                             liste_items))
 
     def display(self):
+        print("\n")
         print(self._title)
         print("\n")
         if not self._data_frame.empty:

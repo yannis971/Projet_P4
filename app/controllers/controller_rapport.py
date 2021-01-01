@@ -5,12 +5,14 @@ Module controlleur_rapport définissant la classe ControllerRapport
 
 import sys
 from operator import attrgetter
-from operator import itemgetter
 
 from app.views.menu import Menu
-from app.views.generic_views import ListView
 from app.views.formulaire import RapportForm
 from app.views.formulaire import TournoiForm
+from app.views.rapport import JoueurRapport
+from app.views.rapport import TournoiRapport
+from app.views.rapport import TourRapport
+from app.views.rapport import MatchRapport
 from app.models.joueur import Joueur
 from app.models.tournoi import Tournoi
 from app.models import exception
@@ -39,7 +41,14 @@ class ControllerRapport:
         criteres_de_tri = RapportForm().recuperer_criteres_de_tri()
         liste_des_acteurs = sorted(Joueur.read_all(),
                                    key=attrgetter(*criteres_de_tri))
-        ListView("Liste de tous les acteurs", liste_des_acteurs).display()
+        titre = "Liste de tous les acteurs triée par "
+        if criteres_de_tri[0] == "classement":
+            titre += "classement"
+        else:
+            titre += "ordre alphabétique"
+        rapport_joueurs = JoueurRapport(titre)
+        rapport_joueurs.set_data_frame(liste_des_acteurs)
+        rapport_joueurs.display()
 
     def recuperer_tournoi(self):
         """
@@ -68,29 +77,39 @@ class ControllerRapport:
         """
         tournoi = self.recuperer_tournoi()
         criteres_de_tri = RapportForm().recuperer_criteres_de_tri()
+        titre = f"Liste de tous les joueurs du tournoi \"{tournoi.nom}\" triée"
         if len(criteres_de_tri) == 1 and criteres_de_tri[0] == 'classement':
             criteres_de_tri[0] = 'rang'
+            titre += " par rang"
+        else:
+            titre += " par ordre alphabétique"
         liste_des_joueurs_du_tournoi = sorted(tournoi.liste_de_participants,
                                               key=attrgetter(*criteres_de_tri))
-        ListView(f"Liste de tous les joueurs du tournoi {tournoi}",
-                 liste_des_joueurs_du_tournoi).display()
+        rapport_joueurs = JoueurRapport(titre)
+        rapport_joueurs.set_data_frame(liste_des_joueurs_du_tournoi)
+        rapport_joueurs.display()
 
     def lister_tournois_handler(self):
         """
         Méthode permettant de lister tous les tournois
         """
-        ListView("Liste de tous les tournois", list(Tournoi.read_all(
-
-        ))).display()
+        liste_des_tournois = sorted(list(Tournoi.read_all()),
+                                    key=attrgetter('id'))
+        rapport_tournois = TournoiRapport("Liste de tous les tournois")
+        rapport_tournois.set_data_frame(liste_des_tournois)
+        rapport_tournois.display()
 
     def lister_tours_tournoi_handler(self):
         """
         Méthode permettant de lister tous les tours d'un tournoi
         """
         tournoi = self.recuperer_tournoi()
-        liste_des_tours_du_tournoi = tournoi.liste_de_tours
-        ListView(f"Liste de tous les tours du tournoi {tournoi}",
-                 liste_des_tours_du_tournoi).display()
+        liste_des_tours_du_tournoi = sorted(tournoi.liste_de_tours,
+                                            key=attrgetter('id'))
+        titre = f"Liste de tous les tours du tournoi \"{tournoi.nom}\""
+        rapport_tours = TourRapport(titre)
+        rapport_tours.set_data_frame(liste_des_tours_du_tournoi)
+        rapport_tours.display()
 
     def lister_matchs_tournoi_handler(self):
         """
@@ -99,17 +118,12 @@ class ControllerRapport:
         tournoi = self.recuperer_tournoi()
         liste_des_tours_du_tournoi = tournoi.liste_de_tours
         for tour in liste_des_tours_du_tournoi:
-            liste_de_matchs = list()
-            for match in tour.liste_de_matchs:
-                data = dict()
-                data['id'] = match.id
-                data['match'] = match.paire_de_joueurs[0].nom + ' - ' + \
-                                match.paire_de_joueurs[1].nom
-                data['score'] = f"{match.score[0]} - {match.score[1]}"
-                liste_de_matchs.append(data)
-            liste_de_matchs.sort(key=itemgetter('id'))
+            liste_des_matchs_du_tournoi = sorted(tour.liste_de_matchs,
+                                                 key=attrgetter('id'))
             titre = f"Liste des matchs du tour : {tour.nom}"
-            ListView(titre, liste_de_matchs).display()
+            rapport_matchs = MatchRapport(titre)
+            rapport_matchs.set_data_frame(liste_des_matchs_du_tournoi)
+            rapport_matchs.display()
 
     def quitter_handler(self):
         """
