@@ -273,11 +273,11 @@ class RapportForm(BaseForm):
         super().__init__()
 
     def recuperer_criteres_de_tri(self):
-        print("vous souhaitez trier la liste :")
-        print("0 - par ordre alphabétique")
-        print("1 - par classement")
+        print("\nvous souhaitez trier la liste :")
+        print("0 - par ordre alphabétique ?")
+        print("1 - par classement ?")
         try:
-            choix = input("votre choix : 0 ou 1 ? ").strip()
+            choix = input("\nentrer votre choix : 0 ou 1 ? ").strip()
             assert isinstance(choix, str) and choix in ['0', '1']
         except AssertionError:
             return self.recuperer_criteres_de_tri()
