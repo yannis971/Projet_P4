@@ -383,5 +383,3 @@ class Tournoi:
         Met à jour le tournoi dans la base de données
         """
         TournoiDAO().update(self)
-
-

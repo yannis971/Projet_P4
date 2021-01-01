@@ -3,6 +3,7 @@
 Module controlleur_tournoi définissant la classe ControllerTournoi
 """
 import sys
+import logging as log
 from operator import attrgetter
 from app.views.menu import Menu
 from app.views.formulaire import JoueurForm, TournoiForm, TourForm, MatchForm
@@ -33,7 +34,7 @@ class ControllerTournoi:
         self._liste_joueurs.sort(key=attrgetter('id'))
         self._tournoi = None
         self._jeton = None
-
+        log.basicConfig(level=log.INFO)
 
     def controles_avant_creer_tournoi(self):
         if (isinstance(self._tournoi, Tournoi) and self._jeton is None) or \
@@ -51,15 +52,15 @@ class ControllerTournoi:
         try:
             self.controles_avant_creer_tournoi()
         except exception.TournoiException as ex:
-            print(ex)
+            log.warning(ex)
         else:
             try:
                 self._tournoi = Tournoi(**TournoiForm().creer_tournoi())
             except exception.TournoiException as ex:
-                print(ex)
+                log.warning(ex)
                 return self.creer_tournoi_handler()
             else:
-                print(f"création tournoi ok - {self._tournoi}")
+                log.info(f"création tournoi ok - {self._tournoi}")
 
     def controles_avant_ajout_joueurs(self):
         """
@@ -73,7 +74,8 @@ class ControllerTournoi:
             message = f"Tour {self._tournoi.liste_de_tours[-1].nom} est en " \
                       f"cours"
             raise exception.TournoiException(message)
-        elif len(self._tournoi.liste_de_tours) == self._tournoi.nombre_de_tours:
+        elif len(self._tournoi.liste_de_tours) == \
+                self._tournoi.nombre_de_tours:
             message = f"{self._tournoi.nombre_de_tours} tours sont créés"
             raise exception.TournoiException(message)
 
@@ -87,9 +89,12 @@ class ControllerTournoi:
                 message = "participants déjà inscrits au tournoi"
                 raise exception.TournoiException(message)
         except exception.TournoiException as ex:
-            print(ex)
+            log.warning(ex)
         else:
-            ListView("Liste de joueurs", self._liste_joueurs).display()
+            entete = ['id', 'nom', 'prenom', 'date_de_naissance', 'sexe',
+                      'classement']
+            ListView("Liste de joueurs", entete,
+                     self._liste_joueurs).display()
             liste_indices_joueurs_inscrits = JoueurForm().ajouter_n_joueurs(8)
             for i in liste_indices_joueurs_inscrits:
                 try:
@@ -100,6 +105,7 @@ class ControllerTournoi:
                 else:
                     self._tournoi.ajouter_participant(self._liste_joueurs[i])
             self._tournoi.initialiser_rang_participants()
+            log.info("ajout 8 joueurs ok")
 
     def controles_avant_generer_paires(self):
         """
@@ -110,7 +116,6 @@ class ControllerTournoi:
             self.controles_avant_ajout_joueurs()
         except exception.TournoiException as ex:
             raise ex
-            return self._controles_ok
         if self._tournoi.nombre_de_joueurs_inscrits == 0:
             message = "Vous devez d'abord ajouter des joueurs au tournoi"
             raise exception.TournoiException(message)
@@ -126,13 +131,13 @@ class ControllerTournoi:
             if self.controles_avant_generer_paires():
                 self._tournoi.creer_tour(len(self._tournoi.liste_de_tours))
         except exception.TournoiException as ex:
-            print(ex)
+            log.warning(ex)
         else:
-            print("generer_paires_joueurs ok")
+            log.info("generer_paires_joueurs ok")
             tour = self._tournoi.liste_de_tours[-1]
-            print(tour)
-            for match in tour.liste_de_matchs:
-                print(match)
+            titre = f"Liste des matchs du tour {tour.nom}"
+            entete = []
+            ListView(titre, entete, tour._liste_de_matchs).display()
 
     def mettre_a_jour_score_du_match(self, match):
         """
@@ -142,24 +147,19 @@ class ControllerTournoi:
             score_01, score_02 = MatchForm(match).mettre_a_jour_score()
             match.update_score(score_01, score_02)
         except exception.MatchException as ex:
-            print(ex)
+            log.warning(ex)
             return self.mettre_a_jour_score_du_match(match)
         else:
-            print(f"mise à jour du score : {match}")
+            log.info("mise à jour score du match ok")
 
     def confirmer_resultats_du_tour(self, tour):
         """
         Méthode permettant de confirmer les résultats d'un tour puis de le
         cloturer
         """
-        liste_de_matchs = list()
-        for match in tour.liste_de_matchs:
-            data = dict()
-            data['match'] = match.paire_de_joueurs[0].nom + ' - ' + \
-                            match.paire_de_joueurs[1].nom
-            data['score'] = f"{match.score[0]} - {match.score[1]}"
-            liste_de_matchs.append(data)
-        ListView(f"Liste des matchs du {tour.nom}", liste_de_matchs).display()
+        titre = f"Liste des matchs du tour {tour.nom}"
+        entete = []
+        ListView(titre, entete, tour._liste_de_matchs).display()
         if TourForm().iscompleted():
             tour.cloturer()
         if len(self._tournoi.liste_de_tours) >= self._tournoi.nombre_de_tours:
@@ -170,7 +170,9 @@ class ControllerTournoi:
             tour = self._tournoi.liste_de_tours[-1]
             titre = f"Classement du tournoi {self._tournoi.nom} "
             titre += f"à l'issue du tour {tour.nom}"
-        ListView(titre, self._tournoi.liste_de_participants).display()
+        entete = ['id', 'nom', 'prenom', 'date_de_naissance', 'sexe',
+                  'classement', 'nombre_de_points', 'rang']
+        ListView(titre, entete, self._tournoi.liste_de_participants).display()
 
     def controles_avant_entrer_resultats(self):
         """
@@ -193,7 +195,7 @@ class ControllerTournoi:
         try:
             self.controles_avant_entrer_resultats()
         except exception.TournoiException as ex:
-            print(ex)
+            log.warning(ex)
         else:
             tour = self._tournoi.liste_de_tours[-1]
             for match in tour.liste_de_matchs:
@@ -205,9 +207,10 @@ class ControllerTournoi:
         Méthode permettant de sauvegarder le tournoi en cours
         """
         if self._tournoi is None or not isinstance(self._tournoi, Tournoi):
-            print("Vous devez d'abord créer ou charger un tournoi")
+            log.warning("Vous devez d'abord créer ou charger un tournoi")
         else:
             self._tournoi.update()
+            log.info("enregistrement tournoi ok")
             if self._jeton == "vérouillé":
                 self._jeton = "libre"
 
@@ -219,7 +222,7 @@ class ControllerTournoi:
         try:
             self.controles_avant_creer_tournoi()
         except exception.TournoiException as ex:
-            print(ex)
+            log.warning(ex)
         else:
             try:
                 methode_acces = TournoiForm().recuperer_methode_acces()
@@ -230,15 +233,16 @@ class ControllerTournoi:
                     index = TournoiForm().recuperer_identifiants_tournoi()
                     tournoi = Tournoi.read_by_index(**index)
             except exception.TournoiException as ex:
-                print(ex)
+                log.warning(ex)
                 return self.charger_tournoi_handler()
             except exception.TournoiDAOException as ex:
-                print(ex)
+                log.warning(ex)
             else:
                 self._tournoi = tournoi
                 data = dict((attr[1:], value) for (attr, value)
                             in tournoi.__dict__.items()
                             if not isinstance(value, list))
+                log.info("chargement tournoi ok")
                 DetailView("Le tournoi suivant est chargé en mémoire",
                            data).display()
 
@@ -246,7 +250,7 @@ class ControllerTournoi:
         """
         Methode permettant de quitter le programme
         """
-        print("Fin du sous-programme tournoi")
+        log.info("Fin du sous-programme tournoi")
         sys.exit(0)
 
     __handlers = {'0': creer_tournoi_handler,

@@ -3,6 +3,7 @@
 Module controlleur_joueur définissant la classe ControllerJoueur
 """
 import sys
+import logging as log
 from operator import attrgetter
 
 from app.views.menu import Menu
@@ -26,6 +27,7 @@ class ControllerJoueur:
         self._menu = Menu("MENU DU PROGRAMME JOUEUR",
                           ControllerJoueur.__liste_de_choix)
         self._choix = self._menu.get_choix()
+        log.basicConfig(level=log.INFO)
 
     def creer_joueur_handler(self):
         """
@@ -35,14 +37,13 @@ class ControllerJoueur:
             joueur = Joueur(**JoueurForm().creer_joueur())
             joueur.create()
         except exception.JoueurException as ex:
-            print(ex)
+            log.warning(ex)
             return self.creer_joueur_handler()
         except exception.JoueurDAOException as ex:
-            print(ex)
-            print(f"création joueur KO - {joueur}")
+            log.warning(ex)
             return 1
         else:
-            print(f"création joueur OK - {joueur}")
+            log.info(f"création joueur OK - {joueur}")
             return 0
 
     def afficher_liste_joueurs_handler(self):
@@ -51,7 +52,9 @@ class ControllerJoueur:
         """
         liste_de_joueurs = list(Joueur.read_all())
         liste_de_joueurs.sort(key=attrgetter('id'))
-        ListView("Liste des joueurs", liste_de_joueurs).display()
+        entete = ['id', 'nom', 'prenom', 'date_de_naissance', 'sexe',
+                  'classement']
+        ListView("Liste des joueurs", entete, liste_de_joueurs).display()
 
     def recuperer_joueur(self):
         """
@@ -66,10 +69,10 @@ class ControllerJoueur:
                 index = JoueurForm().recuperer_identifiants_joueur()
                 joueur = Joueur.read_by_index(**index)
         except exception.JoueurException as ex:
-            print(ex)
+            log.warning(ex)
             return self.recuperer_joueur()
         except exception.JoueurDAOException as ex:
-            print(ex)
+            log.warning(ex)
             return self.recuperer_joueur()
         else:
             return joueur
@@ -86,21 +89,21 @@ class ControllerJoueur:
             joueur.classement = JoueurForm().get_classement()
             joueur.update()
         except exception.JoueurException as ex:
-            print(ex)
+            log.warning(ex)
             return self.modifier_classement_joueur_handler()
         except exception.JoueurDAOException as ex:
-            print(ex)
-            print(f"modification joueur KO - {joueur}")
+            log.warning(ex)
+            log.warning(f"modification joueur KO - {joueur}")
             return 1
         else:
-            print(f"modification joueur OK - {joueur}")
+            log.info(f"modification joueur OK - {joueur}")
             return 0
 
     def quitter_handler(self):
         """
         Methode permettant de quitter le programme
         """
-        print("Fin du sous-programme joueur")
+        log.info("Fin du sous-programme joueur")
         sys.exit(0)
 
     __handlers = {'0': creer_joueur_handler,
