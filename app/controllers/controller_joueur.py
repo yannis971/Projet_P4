@@ -48,13 +48,14 @@ class ControllerJoueur:
 
     def afficher_liste_joueurs_handler(self):
         """
-        Méthode permetannt d'afficher la liste des joueurs
+        Méthode permettant d'afficher la liste des joueurs
         """
         liste_de_joueurs = list(Joueur.read_all())
         liste_de_joueurs.sort(key=attrgetter('id'))
         entete = ['id', 'nom', 'prenom', 'date_de_naissance', 'sexe',
                   'classement']
         ListView("Liste des joueurs", entete, liste_de_joueurs).display()
+        log.info("affichage liste joueurs OK")
 
     def recuperer_joueur(self):
         """

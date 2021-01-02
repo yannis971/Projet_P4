@@ -20,9 +20,13 @@ def parse_arguments():
     return parser.parse_args()
 
 def help():
-    print("\nLogiciel Projet P4 parcours DA Python")
-    print("Auteur : Yannis Saliniere")
-    print("License : GNU GPL V3")
+    print("\nLogiciel Projet P4 du parcours DA Python")
+    print("\nFonctionnalités du programme :")
+    print("\t - gérer des tournois d'échecs")
+    print("\t - gérer des joueurs")
+    print("\t - générer différents rapports relatifs aux tournois et aux joueurs")
+    print("\nAuteur : Yannis Saliniere")
+    print("\nLicense : GNU GPL V3")
     print("\nusage: main.py [-h] [-p PROGRAM]\n")
     print("  -h, --help \t\t show this help message and exit")
     print("  -p PROGRAM, --program PROGRAM")
