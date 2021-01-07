@@ -38,21 +38,21 @@ L'application respecte le design pattern Modèle-Vue-Contrôleur (MVC)
 * Le package `app.views` correspond à la partie Vue. Il contient les modules :
     * formulaire : différents formulaires de saisie de données appelés par les controllers
     * generic_views : vues génériques utilisées par les controllers controller_joueur et controller_tournoi
-    * menu : menu générique affiché par un controller 
+    * menu : menu générique affiché par un controller
     * rapport : différents rapports générés par le controller_rapport
-    
+
 * Le package `app.controllers` représente le Contrôleur. Il contient 3 contrôleurs (un par mode d'appel du programme principal  main.py) :
   * controller_joueur : affiche le menu de gestion des joueurs et exécute différentes actions en fonction des choix de l'utilisateur
   * controller_rapport : affiche le menu de gestion des rapports et exécute différentes actions en fonction des choix de l'utilisateur
   * controller_tournoi : affiche le menu de gestion des tournois et exécute différentes actions en fonction des choix de l'utilisateur
- 
+
 * Le packaqe `app.dao` est la couche d'accès aux données DAO (Data Acces Object).
 
 * Le packaqe `app.utils` contient des utilitaires communs aux packages de l'application
 
-Remarques : 
+Remarques :
 
-Chaque contrôleur n'accède qu'à des objets de type Modele ou Vue. 
+Chaque contrôleur n'accède qu'à des objets de type Modele ou Vue.
 Un contrôleur n'accède jamais directement à la base de données.
 
 #### Diagramme de classes
@@ -169,6 +169,9 @@ La commande `python3 main.py -p rapport` lance le programme d'édition des rappo
 
 ![](images/p4_img_07.png)
 
+
+### 5) Rapport flake8-html
+
 La commande pour générer les rapports flake8-html de vérification de conformité du code source
 Attention se positionner dans le répertoire `projects/Projet_P4/app` pour ne pas scanner tout le code de l'environnement virtuel .
 
@@ -182,13 +185,13 @@ Il suffit alors d'ouvrir le fichier `index.html` dans votre navigateur Internet.
 
 ![](images/p4_img_09.png)
 
-### 5) Licence
+### 6) Licence
 
 Pour ce projet, en plus de la bibliothèque standard `Python`, j'utilise les paquets `tinydb version 4.3.0`, `pandas version 1.2.0`, `flake8 version 3.8.4` et `flake8-html version 0.4.1` tous les 4 compatibles avec la licence **GPL**.
 
 Par conséquent, je publie le code de ce projet sous licence libre **GNU GPL V3**
 
-### 6) Questions/Aide/Support
+### 7) Questions/Aide/Support
 
 En cas de problèmes ou pour questions relatives à ce projet, vous pouvez me contacter via l'un des canaux suivants :
 
