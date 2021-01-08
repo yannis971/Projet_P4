@@ -263,7 +263,6 @@ class TourForm:
                   len(validation))
             return self.iscompleted()
         else:
-            print("return validation", validation)
             return True if validation == "O" else False
 
 

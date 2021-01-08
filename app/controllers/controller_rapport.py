@@ -82,7 +82,7 @@ class ControllerRapport:
             criteres_de_tri[0] = 'rang'
             titre += " par rang"
         else:
-            titre += " par ordre alphabétique"
+            titre += " par ordre alphabét1ique"
         liste_des_joueurs_du_tournoi = sorted(tournoi.liste_de_participants,
                                               key=attrgetter(*criteres_de_tri))
         rapport_joueurs = JoueurRapport(titre)
@@ -116,7 +116,8 @@ class ControllerRapport:
         Methode permettant de lister tous les matchs d'un tournoi
         """
         tournoi = self.recuperer_tournoi()
-        liste_des_tours_du_tournoi = tournoi.liste_de_tours
+        liste_des_tours_du_tournoi = sorted(tournoi.liste_de_tours,
+                                            key=attrgetter('id'))
         for tour in liste_des_tours_du_tournoi:
             liste_des_matchs_du_tournoi = sorted(tour.liste_de_matchs,
                                                  key=attrgetter('id'))

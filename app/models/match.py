@@ -72,10 +72,15 @@ class Match:
         else:
             if (score_joueur_01, score_joueur_02) in Match.__scores_autorises:
                 self._score[0] = score_joueur_01
-                self._paire_de_joueurs[0].nombre_de_points += score_joueur_01
                 self._score[1] = score_joueur_02
-                self._paire_de_joueurs[1].nombre_de_points += score_joueur_02
             else:
                 message = f"le score du match est invalide : {score_joueur_01}"
                 message += f",{score_joueur_02}"
                 raise MatchException(message)
+
+    def reset_score(self):
+        """
+        Methode permettant de remettre à zéro le score du match
+        """
+        self._score[0] = 0.0
+        self._score[1] = 0.0
