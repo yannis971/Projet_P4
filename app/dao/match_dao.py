@@ -108,9 +108,7 @@ class MatchDAO:
         Méthode qui génère une instance de match à partir d'un document
         """
         premier_joueur = JoueurDAO().read(document['id_joueur_1'])
-        premier_joueur.nombre_de_points = 0.0
         deuxieme_joueur = JoueurDAO().read(document['id_joueur_2'])
-        deuxieme_joueur.nombre_de_points = 0.0
         paires_de_joueurs = [premier_joueur, deuxieme_joueur]
         match = mx.Match(*paires_de_joueurs)
         match.id = document['id']

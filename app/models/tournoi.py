@@ -217,21 +217,16 @@ class Tournoi:
             joueur.rang = rang
             rang += 1
 
-    def finaliser_rang_participants(self):
+    def update_rang_participants(self):
         """
         Methode appelée lorsque l'on cloture un tournoi
-        afin d'établir le classement final du tournoi
+        ou lorsque l'on met à jour le nombre de points des participants
         """
-        if self._statut == "en cours":
-            message = f"{self._nom} en cours : impossible de finaliser"
-            message += " le classement"
-            raise TournoiException(message)
-        else:
-            self.trier_liste_de_participants()
-            rang = 1
-            for joueur in self._liste_de_participants:
-                joueur.rang = rang
-                rang += 1
+        self.trier_liste_de_participants()
+        rang = 1
+        for joueur in self._liste_de_participants:
+            joueur.rang = rang
+            rang += 1
 
     def trier_liste_de_participants(self):
         """
@@ -320,6 +315,25 @@ class Tournoi:
         return self.paires_premier_tour() if indice_de_tour == 0 \
             else self.paires_autres_tours()
 
+    def update_nombre_de_points(self, liste_de_matchs):
+        """
+        Methode permettant de mettre à jour le nombre de points des joueurs
+        """
+        liste_id = [joueur.id for joueur in self._liste_de_participants]
+        for match in liste_de_matchs:
+            for i in range(0, 2, 1):
+                try:
+                    joueur_id = match.paire_de_joueurs[i].id
+                    indice = liste_id.index(joueur_id)
+                except ValueError:
+                    message = "joueur absent de la liste de participants :"
+                    message += f"{match.paire_de_joueurs[i]}"
+                    raise TournoiException(message)
+                else:
+                    self._liste_de_participants[indice].nombre_de_points += \
+                        match.score[i]
+        self.update_rang_participants()
+
     def creer_tour(self, indice_de_tour):
         """
           Méthode permettant de créer un tour
@@ -340,11 +354,11 @@ class Tournoi:
 
     def cloturer(self):
         """
-          Méthode permettant de cloturer un tour
+          Méthode permettant de cloturer un tournoi
         """
         self._date_de_fin = util.encode_date(datetime.now())
         self._statut = "terminé"
-        self.finaliser_rang_participants()
+        self.update_rang_participants()
 
     def create(self):
         """

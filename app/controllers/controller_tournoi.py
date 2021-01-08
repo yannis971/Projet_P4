@@ -162,6 +162,17 @@ class ControllerTournoi:
         ListView(titre, entete, tour._liste_de_matchs).display()
         if TourForm().iscompleted():
             tour.cloturer()
+            try:
+                self._tournoi.update_nombre_de_points(tour._liste_de_matchs)
+            except exception.TournoiException as ex:
+                log.error(ex)
+                sys.exit(1)
+            else:
+                message = f"confirmation résultats : tour {tour.nom} terminé"
+                log.info(message)
+        else:
+            for match in tour.liste_de_matchs:
+                match.reset_score()
         if len(self._tournoi.liste_de_tours) >= self._tournoi.nombre_de_tours:
             self._tournoi.cloturer()
             self.enregistrer_handler()
@@ -232,6 +243,7 @@ class ControllerTournoi:
                 else:
                     index = TournoiForm().recuperer_identifiants_tournoi()
                     tournoi = Tournoi.read_by_index(**index)
+                    tournoi._liste_de_tours.sort(key=attrgetter('id'))
             except exception.TournoiException as ex:
                 log.warning(ex)
                 return self.charger_tournoi_handler()

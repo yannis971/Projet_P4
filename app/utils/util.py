@@ -14,7 +14,6 @@ format_date_heure = '%Y-%m-%dT%H:%M:%S'
 
 
 def clear_command(name):
-    print("platform.system", name)
     return 'cls' if name == 'Windows' else 'clear'
 
 
