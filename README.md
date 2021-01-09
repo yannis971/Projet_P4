@@ -172,12 +172,13 @@ La commande `python3 main.py -p rapport` lance le programme d'édition des rappo
 
 ### 5) Rapport flake8-html
 
-La commande pour générer les rapports flake8-html de vérification de conformité du code source
-Attention se positionner dans le répertoire `projects/Projet_P4/app` pour ne pas scanner tout le code de l'environnement virtuel .
+La commande pour générer les rapports flake8-html de vérification de conformité du code source est la suivante :
 
-`flake8 --format=html --htmldir=flake-report`
+`flake8 --format=html --htmldir=flake-report --exclude=env/;images/`
 
-Le résultat se trouve dans le dossier `flake-report` de `projects/Projet_P4`
+Attention : se positionner à la racine du projet et exclure les répertoires env/ et images/ du périmètre de fichiers à analyser.
+
+Le résultat se trouve dans le dossier `flake-report`
 
 ![](images/p4_img_08.png)
 
